@@ -18,11 +18,14 @@ jobs:
         with:
           dotnet-version: '8.0.400'
 
+      - name: List files (debug step to verify path)
+        run: ls -R
+
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore biometric_app_api_core/BIA/BIA.csproj
 
       - name: Build project (Check if it compiles before Coverity scan)
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build biometric_app_api_core/BIA/BIA.csproj --configuration Release --no-restore
 
       - name: Download Coverity Analysis Tool
         run: |
@@ -31,10 +34,11 @@ jobs:
 
       - name: Run Coverity Build
         run: |
-          ./cov-analysis*/bin/cov-build --dir cov-int dotnet build --configuration Release
+          ./cov-analysis*/bin/cov-build --dir cov-int dotnet build biometric_app_api_core/BIA/BIA.csproj --configuration Release
 
       - name: Compress analysis results
         run: tar czvf cov-int.tgz cov-int
+
       - name: Upload to Coverity
         run: |
           curl --form token=${{ secrets.COVERITY_TOKEN }} \
