@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Coverity Build
         run: |
-          ./cov-analysis*/bin/cov-build --dir cov-int dotnet build biometric_app_api_core/BIA/BIA.csproj --configuration Release
+          ./cov-analysis*/bin/cov-build --dir cov-int dotnet build Biometric_App_API_Core/BIA/BIA.csproj --configuration Release
 
       - name: Compress analysis results
         run: tar czvf cov-int.tgz cov-int
