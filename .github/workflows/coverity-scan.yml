@@ -1,0 +1,45 @@
+name: Coverity Scan
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  coverity:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.400'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project (Check if it compiles before Coverity scan)
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Download Coverity Analysis Tool
+        run: |
+          wget --post-data "token=${{ secrets.COVERITY_TOKEN }}&project=${{ github.repository }}" -O coverity_tool.tgz https://scan.coverity.com/download/linux64
+          tar -xvzf coverity_tool.tgz
+
+      - name: Run Coverity Build
+        run: |
+          ./cov-analysis*/bin/cov-build --dir cov-int dotnet build --configuration Release
+
+      - name: Compress analysis results
+        run: tar czvf cov-int.tgz cov-int
+      - name: Upload to Coverity
+        run: |
+          curl --form token=${{ secrets.COVERITY_TOKEN }} \
+               --form email="mdjubayerhasan264@gmail.com" \
+               --form file=@cov-int.tgz \
+               --form version="v1.0.0" \
+               --form description="C# .NET Project Scan" \
+               https://scan.coverity.com/builds?project=${{ github.repository }}
