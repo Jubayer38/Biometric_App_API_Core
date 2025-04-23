@@ -22,10 +22,10 @@ jobs:
         run: ls -R
 
       - name: Restore dependencies
-        run: dotnet restore biometric_app_api_core/BIA/BIA.csproj
+        run: dotnet restore Biometric_App_API_Core/BIA/BIA.csproj
 
       - name: Build project (Check if it compiles before Coverity scan)
-        run: dotnet build biometric_app_api_core/BIA/BIA.csproj --configuration Release --no-restore
+        run: dotnet build Biometric_App_API_Core/BIA/BIA.csproj --configuration Release --no-restore
 
       - name: Download Coverity Analysis Tool
         run: |
