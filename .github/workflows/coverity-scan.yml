@@ -22,10 +22,10 @@ jobs:
           dotnet-version: '8.0.400'
 
       - name: Restore dependencies
-        run: dotnet restore Biometric_App_API_Core/BIA/BIA.sln
+        run: dotnet restore BIA/BIA.sln
 
       - name: Build project (Check if it compiles before Coverity scan)
-        run: dotnet build Biometric_App_API_Core/BIA/BIA.sln --configuration Release --no-restore
+        run: dotnet build BIA/BIA.sln --configuration Release --no-restore
 
       - name: Download Coverity Analysis Tool
         run: |
@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Coverity Build
         run: |
-          ./cov-analysis*/bin/cov-build --dir cov-int dotnet build Biometric_App_API_Core/BIA/BIA.sln --configuration Release
+          ./cov-analysis*/bin/cov-build --dir cov-int dotnet build BIA/BIA.sln --configuration Release
 
       - name: Compress analysis results
         run: tar czvf cov-int.tgz cov-int
