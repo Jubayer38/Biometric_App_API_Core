@@ -13,21 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List files (for debugging)
-        run: ls -R
-
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.400'
+          dotnet-version: '8.0.x'
 
       - name: Restore dependencies
         run: dotnet restore BIA/BIA.sln
 
-      - name: Build project (Check if it compiles before Coverity scan)
-        run: dotnet build BIA/BIA.sln --configuration Release --no-restore
-
-      - name: Download Coverity Analysis Tool
+      - name: Download Coverity
         run: |
           wget --post-data "token=${{ secrets.COVERITY_TOKEN }}&project=${{ github.repository }}" -O coverity_tool.tgz https://scan.coverity.com/download/linux64
           tar -xvzf coverity_tool.tgz
@@ -36,14 +30,14 @@ jobs:
         run: |
           ./cov-analysis*/bin/cov-build --dir cov-int dotnet build BIA/BIA.sln --configuration Release
 
-      - name: Compress analysis results
+      - name: Compress analysis
         run: tar czvf cov-int.tgz cov-int
 
       - name: Upload to Coverity
         run: |
           curl --form token=${{ secrets.COVERITY_TOKEN }} \
-               --form email="mdjubayerhasan264@gmail.com" \
+               --form email="mdjubayerhasan264@email.com" \
                --form file=@cov-int.tgz \
                --form version="v1.0.0" \
-               --form description="C# .NET Project Scan" \
+               --form description="Test Project for Coverity" \
                https://scan.coverity.com/builds?project=${{ github.repository }}
