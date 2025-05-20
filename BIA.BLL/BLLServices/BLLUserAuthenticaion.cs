@@ -11,7 +11,7 @@ using BIA.Entity.ViewModel;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
+using System.Security.Cryptography;
 
 namespace BIA.BLL.BLLServices
 {
@@ -825,12 +825,11 @@ namespace BIA.BLL.BLLServices
             {
                 var globalSettingsData = await getChangePasswordGlobalSettingsData();
 
-                Random random = new Random();
                 int randomPWD = 0;
 
                 for (int i = 0; i < 10; i++)
                 {
-                    randomPWD = random.Next(111111, 999999);
+                    randomPWD = RandomNumberGenerator.GetInt32(111111, 999999);
                     if (isSameNumberOrCharacterOrTrendScquenceExists(randomPWD.ToString()
                                                                     , globalSettingsData.Item1
                                                                     , globalSettingsData.Item2
