@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BIA.Entity.Utility
 {
@@ -21,15 +20,15 @@ namespace BIA.Entity.Utility
         public static string Encrypto(string value)
         {
             StringBuilder hash = new StringBuilder();
-            MD5CryptoServiceProvider md5provider = new MD5CryptoServiceProvider();
-            byte[] bytes = md5provider.ComputeHash(new UTF8Encoding().GetBytes(value));
-
-            for (int i = 0; i < bytes.Length; i++)
+            using (SHA256 sha256 = SHA256.Create())
             {
-                hash.Append(bytes[i].ToString("x2"));
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(value));
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    hash.Append(bytes[i].ToString("x2"));
+                }
             }
             return hash.ToString();
-
         }
 
         public static string Encrypt(string toEncrypt, bool useHashing)
@@ -37,38 +36,33 @@ namespace BIA.Entity.Utility
             byte[] keyArray;
             byte[] toEncryptArray = UTF8Encoding.UTF8.GetBytes(toEncrypt);
 
-            //If hashing use get hashcode regards to your key
             if (useHashing)
             {
-                MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-                keyArray = hashmd5.ComputeHash(UTF8Encoding.UTF8.GetBytes("bl_smart_pos"));
-                //Always release the resources and flush data
-                // of the Cryptographic service provide. Best Practice
-
-                hashmd5.Clear();
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    keyArray = sha256.ComputeHash(UTF8Encoding.UTF8.GetBytes("bl_smart_pos"));
+                }
             }
             else
                 keyArray = UTF8Encoding.UTF8.GetBytes("bl_smart_pos");
 
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            //set the secret key for the tripleDES algorithm
-            tdes.Key = keyArray;
-            //mode of operation. there are other 4 modes.
-            //We choose ECB(Electronic code Book)
-            tdes.Mode = CipherMode.ECB;
-            //padding mode(if any extra byte added)
+            using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
+            {
+                tdes.Key = keyArray;
+                tdes.Mode = CipherMode.CBC;
+                tdes.Padding = PaddingMode.PKCS7;
+                tdes.GenerateIV();
 
-            tdes.Padding = PaddingMode.PKCS7;
+                ICryptoTransform cTransform = tdes.CreateEncryptor();
+                byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
-            ICryptoTransform cTransform = tdes.CreateEncryptor();
-            //transform the specified region of bytes array to resultArray
-            byte[] resultArray =
-              cTransform.TransformFinalBlock(toEncryptArray, 0,
-              toEncryptArray.Length);
-            //Release resources held by TripleDes Encryptor
-            tdes.Clear();
-            //Return the encrypted data into unreadable string format
-            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+                // Prepend IV to ciphertext
+                byte[] resultWithIv = new byte[tdes.IV.Length + resultArray.Length];
+                Buffer.BlockCopy(tdes.IV, 0, resultWithIv, 0, tdes.IV.Length);
+                Buffer.BlockCopy(resultArray, 0, resultWithIv, tdes.IV.Length, resultArray.Length);
+
+                return Convert.ToBase64String(resultWithIv);
+            }
         }
 
         /// <summary>
@@ -81,59 +75,56 @@ namespace BIA.Entity.Utility
         {
             byte[] keyArray;
             byte[] toEncryptArray;
-            //get the byte code of the string
             try
             {
                 toEncryptArray = Convert.FromBase64String(cipherString);
             }
             catch (Exception)
             {
-
                 throw new Exception("Invalid security token");
             }
 
             if (useHashing)
             {
-                //if hashing was used get the hash code with regards to your key
-                MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-                keyArray = hashmd5.ComputeHash(UTF8Encoding.UTF8.GetBytes("bl_smart_pos"));
-                //release any resource held by the MD5CryptoServiceProvider
-
-                hashmd5.Clear();
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    keyArray = sha256.ComputeHash(UTF8Encoding.UTF8.GetBytes("bl_smart_pos"));
+                }
             }
             else
             {
-                //if hashing was not implemented get the byte code of the key
                 keyArray = UTF8Encoding.UTF8.GetBytes("bl_smart_pos");
             }
 
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            //set the secret key for the tripleDES algorithm
-            tdes.Key = keyArray;
-            //mode of operation. there are other 4 modes. 
-            //We choose ECB(Electronic code Book)
-
-            tdes.Mode = CipherMode.ECB;
-            //padding mode(if any extra byte added)
-            tdes.Padding = PaddingMode.PKCS7;
-
-            byte[] resultArray;
-            try
+            using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
             {
-                ICryptoTransform cTransform = tdes.CreateDecryptor();
-                resultArray = cTransform.TransformFinalBlock(
-                                     toEncryptArray, 0, toEncryptArray.Length);
-            }
-            catch (Exception)
-            {
-                throw new Exception("Invalid security token");
-            }
+                tdes.Key = keyArray;
+                tdes.Mode = CipherMode.CBC;
+                tdes.Padding = PaddingMode.PKCS7;
 
-            //Release resources held by TripleDes Encryptor                
-            tdes.Clear();
-            //return the Clear decrypted TEXT
-            return UTF8Encoding.UTF8.GetString(resultArray);
+                // Extract IV from the beginning of the cipher text
+                byte[] iv = new byte[tdes.BlockSize / 8];
+                byte[] actualCipher = new byte[toEncryptArray.Length - iv.Length];
+                Buffer.BlockCopy(toEncryptArray, 0, iv, 0, iv.Length);
+                Buffer.BlockCopy(toEncryptArray, iv.Length, actualCipher, 0, actualCipher.Length);
+
+                tdes.IV = iv;
+
+                byte[] resultArray;
+                try
+                {
+                    ICryptoTransform cTransform = tdes.CreateDecryptor();
+                    resultArray = cTransform.TransformFinalBlock(actualCipher, 0, actualCipher.Length);
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Invalid security token");
+                }
+
+                return UTF8Encoding.UTF8.GetString(resultArray);
+            }
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -205,10 +196,10 @@ namespace BIA.Entity.Utility
                 try
                 {
                     StringBuilder strHex = new StringBuilder();
-                    using (MD5 md5 = MD5.Create())
+                    using (SHA256 sha256 = SHA256.Create())
                     {
                         byte[] bytArText = Encoding.Default.GetBytes(strInput);
-                        byte[] bytArHash = md5.ComputeHash(bytArText);
+                        byte[] bytArHash = sha256.ComputeHash(bytArText);
                         for (int i = 0; i < bytArHash.Length; i++)
                         {
                             strHex.Append(bytArHash[i].ToString("X2"));

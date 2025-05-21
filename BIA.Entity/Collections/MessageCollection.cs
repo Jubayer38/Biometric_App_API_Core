@@ -302,7 +302,19 @@ namespace BIA.Entity.Collections
         {
             get
             {
-                return "Password has been sent to Retailer's transaction mobile number.";
+                try
+                {
+                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+                    return configuration.GetSection("AppSettings:PWDSentToMobile").Value;
+                }
+                catch (NullReferenceException)
+                {
+                    throw new Exception("'PWDSentToMobile' key may be missing within AppSettings in appsettings.json file.");
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 

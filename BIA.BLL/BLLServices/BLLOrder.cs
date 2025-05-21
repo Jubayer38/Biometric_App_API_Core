@@ -120,7 +120,7 @@ namespace BIA.BLL.BLLServices
                 order.house_number = model.house_number;
                 order.road_number = model.road_number;
                 order.village = model.village;
-                order.division_id = model.division_id.Equals(null) ? null : model.division_id;
+                order.division_id = model.division_id;
                 order.district_id = model.district_id.Equals(null) ? null : model.district_id;
                 order.thana_id = model.thana_id.Equals(null) ? null : model.thana_id;
                 order.postal_code = String.IsNullOrEmpty(model.postal_code) ? "0" : model.postal_code;

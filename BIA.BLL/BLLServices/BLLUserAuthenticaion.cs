@@ -1,5 +1,4 @@
-﻿using BIA.BLL.Utility;
-using BIA.DAL.Repositories;
+﻿using BIA.DAL.Repositories;
 using BIA.Entity.Collections;
 using BIA.Entity.CommonEntity;
 using BIA.Entity.DB_Model;
@@ -857,12 +856,11 @@ namespace BIA.BLL.BLLServices
             {
                 var globalSettingsData = await getChangePasswordGlobalSettingsDataV2();
 
-                Random random = new Random();
                 int randomPWD = 0;
 
                 for (int i = 0; i < 10; i++)
                 {
-                    randomPWD = random.Next(111111, 999999);
+                    randomPWD = RandomNumberGenerator.GetInt32(111111, 1000000); // 1000000 is exclusive upper bound
                     if (isSameNumberOrCharacterOrTrendScquenceExistsV2(randomPWD.ToString()
                                                                     , globalSettingsData.Item1
                                                                     , globalSettingsData.Item2

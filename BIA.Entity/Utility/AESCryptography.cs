@@ -71,16 +71,9 @@ namespace BIA.Entity.Utility
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                if (string.Equals(ex.Message, "Padding is invalid and cannot be removed."))
-                {
-                    decrypted = "InvalidSessionToken";
-                }
-                else
-                {
-                    decrypted = "InvalidSessionToken";
-                }
+                decrypted = "InvalidSessionToken";
                 return decrypted;
             }
 
@@ -152,16 +145,9 @@ namespace BIA.Entity.Utility
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                if (string.Equals(ex.Message, "Padding is invalid and cannot be removed."))
-                {
-                    decrypted = "InvalidSessionToken";
-                }
-                else
-                {
-                    decrypted = "InvalidSessionToken";
-                }
+                decrypted = "InvalidSessionToken";
                 return decrypted;
             }
 
