@@ -4117,14 +4117,15 @@ namespace BIA.Controllers
                 else if (dbssResp?["data"]?["status"]?.ToString().ToLower() == "failed")
                 {
                     response.result = false;
-                    
-                    if(string.IsNullOrEmpty(dbssResp?["data"]?["error_message"]?.ToString()))
+
+                    response.message = MessageCollection.SIMIsNotInInventory;
+                    if (dbssResp != null && dbssResp.ContainsKey("data") && dbssResp["data"] != null && (dbssResp["data"] is JObject dataObj && dataObj.ContainsKey("error_message")))
                     {
-                        response.message = MessageCollection.SIMIsNotInInventory;
-                    }
-                    else
-                    {
-                        response.message = dbssResp?["data"]?["error_message"]?.ToString();
+                        var errorMessage = dbssResp["data"]["error_message"]?.ToString();
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            response.message = errorMessage;
+                        }
                     }
 
                     return response;
