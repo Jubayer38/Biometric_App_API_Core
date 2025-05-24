@@ -2596,7 +2596,7 @@ namespace BIA.BLL.BLLServices
                       String.IsNullOrEmpty(model.poc_msisdn_number))
                     order.sim_category = model.src_sim_category;
                 else
-                    order.sim_category = model.sim_category.Equals(null) ? (decimal?)null : model.sim_category;
+                    order.sim_category = model.sim_category;
 
 
                 if (!String.IsNullOrEmpty(model.sim_number))

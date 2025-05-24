@@ -89,7 +89,7 @@ namespace BIA.Controllers
                     });
                 }
 
-                if (request.is_Success.Equals(null))
+                if (request.is_Success == null)
                 {
                     return Ok(new BIFinishNotiResponse()
                     {
