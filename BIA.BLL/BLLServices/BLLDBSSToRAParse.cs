@@ -220,8 +220,17 @@ namespace BIA.BLL.BLLServices
                 else if (dbssResp?["data"]?["status"]?.ToString().ToLower() == "failed")
                 {
                     response.result = false;
-                    response.message = dbssResp?["data"]?["error_message"] != null
-                                        && dbssResp?["data"]?["error_message"]?.ToString() != "" ? dbssResp?["data"]?["error_message"]?.ToString() : MessageCollection.SIMIsNotInInventory;
+
+                    response.message = MessageCollection.SIMIsNotInInventory;
+                    if (dbssResp != null && dbssResp.ContainsKey("data") && dbssResp["data"] != null && (dbssResp["data"] is JObject dataObj && dataObj.ContainsKey("error_message")))
+                    {
+                        var errorMessage = dbssResp["data"]["error_message"]?.ToString();
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            response.message = errorMessage;
+                        }
+                    }
+
                     return response;
                 }
 
@@ -463,8 +472,17 @@ namespace BIA.BLL.BLLServices
                 else if (dbssResp?["data"]?["status"]?.ToString().ToLower() == "failed")
                 {
                     response.result = false;
-                    response.message = dbssResp?["data"]?["error_message"] != null
-                                        && dbssResp?["data"]?["error_message"]?.ToString() != "" ? dbssResp?["data"]?["error_message"]?.ToString() : MessageCollection.SIMIsNotInInventory;
+
+                    response.message = MessageCollection.SIMIsNotInInventory;
+                    if (dbssResp != null && dbssResp.ContainsKey("data") && dbssResp["data"] != null && (dbssResp["data"] is JObject dataObj && dataObj.ContainsKey("error_message")))
+                    {
+                        var errorMessage = dbssResp["data"]["error_message"]?.ToString();
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            response.message = errorMessage;
+                        }
+                    }
+
                     return response;
                 }               
                 else if (dbssResp?["data"]?["logical_inventory_status"]?.ToString().ToLower() == "used")
@@ -701,8 +719,17 @@ namespace BIA.BLL.BLLServices
                 else if (dbssResp?["data"]?["status"]?.ToString().ToLower() == "failed")
                 {
                     response.result = false;
-                    response.message = dbssResp?["data"]?["error_message"] != null
-                                        && dbssResp?["data"]?["error_message"]?.ToString() != "" ? dbssResp?["data"]?["error_message"]?.ToString() : MessageCollection.SIMIsNotInInventory;
+
+                    response.message = MessageCollection.SIMIsNotInInventory;
+                    if (dbssResp != null && dbssResp.ContainsKey("data") && dbssResp["data"] != null && (dbssResp["data"] is JObject dataObj && dataObj.ContainsKey("error_message")))
+                    {
+                        var errorMessage = dbssResp["data"]["error_message"]?.ToString();
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            response.message = errorMessage;
+                        }
+                    }
+
                     return response;
                 }
                 else if (dbssResp?["data"]?["logical_inventory_status"]?.ToString().ToLower() == "used")

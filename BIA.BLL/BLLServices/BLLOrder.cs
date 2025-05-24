@@ -54,7 +54,7 @@ namespace BIA.BLL.BLLServices
                       String.IsNullOrEmpty(model.poc_msisdn_number))
                     order.sim_category = model.src_sim_category;
                 else
-                    order.sim_category = model.sim_category.Equals(null) ? (decimal?)null : model.sim_category;
+                    order.sim_category = model.sim_category;
 
                 if (!String.IsNullOrEmpty(model.sim_number))
                 {
@@ -410,9 +410,9 @@ namespace BIA.BLL.BLLServices
                 order.house_number = model.house_number;
                 order.road_number = model.road_number;
                 order.village = model.village;
-                order.division_id = model.division_id.Equals(null) ? null : model.division_id;
-                order.district_id = model.district_id.Equals(null) ? null : model.district_id;
-                order.thana_id = model.thana_id.Equals(null) ? null : model.thana_id;
+                order.division_id = model.division_id;
+                order.district_id = model.district_id;
+                order.thana_id = model.thana_id;
                 order.postal_code = String.IsNullOrEmpty(model.postal_code) ? "0" : model.postal_code;
 
                 //=====temp modelfication (as RA apk is unable to update [15-12-19])============
@@ -652,7 +652,7 @@ namespace BIA.BLL.BLLServices
                       String.IsNullOrEmpty(model.poc_msisdn_number))
                     order.sim_category = model.src_sim_category;
                 else
-                    order.sim_category = model.sim_category.Equals(null) ? (decimal?)null : model.sim_category;
+                    order.sim_category = model.sim_category;
 
                 if (!String.IsNullOrEmpty(model.sim_number))
                 {
@@ -1022,9 +1022,9 @@ namespace BIA.BLL.BLLServices
                 order.house_number = model.house_number;
                 order.road_number = model.road_number;
                 order.village = model.village;
-                order.division_id = model.division_id.Equals(null) ? null : model.division_id;
-                order.district_id = model.district_id.Equals(null) ? null : model.district_id;
-                order.thana_id = model.thana_id.Equals(null) ? null : model.thana_id;
+                order.division_id = model.division_id;
+                order.district_id = model.district_id;
+                order.thana_id = model.thana_id;
                 order.postal_code = String.IsNullOrEmpty(model.postal_code) ? "0" : model.postal_code;
 
                 //=====temp modelfication (as RA apk is unable to update [15-12-19])============
@@ -1260,7 +1260,7 @@ namespace BIA.BLL.BLLServices
                       String.IsNullOrEmpty(model.poc_msisdn_number))
                     order.sim_category = model.src_sim_category;
                 else
-                    order.sim_category = model.sim_category.Equals(null) ? (decimal?)null : model.sim_category;
+                    order.sim_category = model.sim_category;
 
                 if (!String.IsNullOrEmpty(model.sim_number))
                 {
@@ -1595,7 +1595,7 @@ namespace BIA.BLL.BLLServices
                       String.IsNullOrEmpty(model.poc_msisdn_number))
                     order.sim_category = model.src_sim_category;
                 else
-                    order.sim_category = model.sim_category.Equals(null) ? (decimal?)null : model.sim_category;
+                    order.sim_category = model.sim_category;
 
                 if (!String.IsNullOrEmpty(model.sim_number))
                 {
@@ -1996,9 +1996,9 @@ namespace BIA.BLL.BLLServices
                 order.house_number = model.house_number;
                 order.road_number = model.road_number;
                 order.village = model.village;
-                order.division_id = model.division_id.Equals(null) ? null : model.division_id;
-                order.district_id = model.district_id.Equals(null) ? null : model.district_id;
-                order.thana_id = model.thana_id.Equals(null) ? null : model.thana_id;
+                order.division_id = model.division_id;
+                order.district_id = model.district_id;
+                order.thana_id = model.thana_id;
                 order.postal_code = String.IsNullOrEmpty(model.postal_code) ? "0" : model.postal_code;
 
                 //=====temp modelfication (as RA apk is unable to update [15-12-19])============
@@ -2329,7 +2329,7 @@ namespace BIA.BLL.BLLServices
                 order.house_number = model.house_number;
                 order.road_number = model.road_number;
                 order.village = model.village;
-                order.division_id = model.division_id.Equals(null) ? null : model.division_id;
+                order.division_id = model.division_id;
                 order.district_id = model.district_id.Equals(null) ? null : model.district_id;
                 order.thana_id = model.thana_id.Equals(null) ? null : model.thana_id;
                 order.postal_code = String.IsNullOrEmpty(model.postal_code) ? "0" : model.postal_code;
@@ -2663,7 +2663,7 @@ namespace BIA.BLL.BLLServices
                 order.house_number = model.house_number;
                 order.road_number = model.road_number;
                 order.village = model.village;
-                order.division_id = model.division_id.Equals(null) ? null : model.division_id;
+                order.division_id = model.division_id;
                 order.district_id = model.district_id.Equals(null) ? null : model.district_id;
                 order.thana_id = model.thana_id.Equals(null) ? null : model.thana_id;
                 order.postal_code = String.IsNullOrEmpty(model.postal_code) ? "0" : model.postal_code;
@@ -2830,7 +2830,7 @@ namespace BIA.BLL.BLLServices
                       String.IsNullOrEmpty(model.poc_msisdn_number))
                     order.sim_category = model.src_sim_category;
                 else
-                    order.sim_category = model.sim_category.Equals(null) ? (decimal?)null : model.sim_category;
+                    order.sim_category = model.sim_category;
 
 
                 if (!String.IsNullOrEmpty(model.sim_number))
