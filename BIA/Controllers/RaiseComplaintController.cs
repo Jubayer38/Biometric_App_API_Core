@@ -94,7 +94,7 @@ namespace BIA.Controllers
                     return Ok(new ComplaintResponseModel()
                     {
                         isError = true,
-                        message = apiResponse != null ? apiResponse.message : " "
+                        message = apiResponse.message
                     });
                 }
 
