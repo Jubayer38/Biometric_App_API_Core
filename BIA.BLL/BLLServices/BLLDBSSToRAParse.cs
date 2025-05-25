@@ -2634,22 +2634,12 @@ namespace BIA.BLL.BLLServices
                         if (category != null)
                         {
                             var catInfo= await _bllCommon.GetDesiredCategoryMessage(category,channel_name);
-                            if (category != null)
-                            {
-                                raResp.data_message = catInfo.message;
-                                raResp.category_name = catInfo.name;
-                                raResp.isDesiredCategory = true;
-                                raResp.result = true;
-                                raResp.message = MessageCollection.MSISDNValid;
-                            }
-                            else
-                            {
-                                raResp.data_message = "No amount is configured for "+category+ " category";
-                                raResp.category_name = category;
-                                raResp.isDesiredCategory = false;
-                                raResp.result = false;
-                                raResp.message = "No amount is configured for " + category + " category";
-                            }
+
+                            raResp.data_message = catInfo.message;
+                            raResp.category_name = catInfo.name;
+                            raResp.isDesiredCategory = true;
+                            raResp.result = true;
+                            raResp.message = MessageCollection.MSISDNValid;
                         }
                         
                     }
@@ -3035,8 +3025,23 @@ namespace BIA.BLL.BLLServices
 
                 if (dbssRespObj?["data"]?["attributes"] != null)
                 {
-                    retailer_code = dbssRespObj?["data"]?["attributes"]?["salesman-id"]?.ToString() ?? string.Empty;
-                    number_category = dbssRespObj?["data"]?["attributes"]?["number-category"]?.ToString() ?? string.Empty;
+                    if (dbssRespObj?["data"]?["attributes"]?["salesman-id"] != null)
+                    {
+                        retailer_code = dbssRespObj?["data"]?["attributes"]?["salesman-id"].ToString();
+                    }
+                    else
+                    {
+                        retailer_code = string.Empty;
+                    }
+
+                    if (dbssRespObj["data"]?["attributes"]?["number-category"] != null)
+                    {
+                        number_category = dbssRespObj?["data"]?["attributes"]?["number-category"].ToString();
+                    }
+                    else
+                    {
+                        number_category = string.Empty;
+                    }
 
                     if (!string.IsNullOrEmpty(retailer_code) && retailer_code.Length < 6)
                     {
