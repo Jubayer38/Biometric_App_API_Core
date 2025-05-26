@@ -3034,14 +3034,7 @@ namespace BIA.BLL.BLLServices
                         retailer_code = string.Empty;
                     }
 
-                    if (dbssRespObj["data"]?["attributes"]?["number-category"] != null)
-                    {
-                        number_category = dbssRespObj?["data"]?["attributes"]?["number-category"].ToString();
-                    }
-                    else
-                    {
-                        number_category = string.Empty;
-                    }
+                    number_category = dbssRespObj["data"]?["attributes"]?["number-category"]?.ToString() ?? string.Empty;
 
                     if (!string.IsNullOrEmpty(retailer_code) && retailer_code.Length < 6)
                     {
