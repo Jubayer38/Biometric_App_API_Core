@@ -1116,8 +1116,7 @@ namespace BIA.BLL.BLLServices
             {
                 if(dbssRespObj != null)
                 {
-                    if (dbssRespObj["data"] == null
-                    || dbssRespObj?["data"]?.Count() <= 0)
+                    if (dbssRespObj?["data"]?.Any() != true)
                     {
                         raResp.result = false;
                         raResp.message = MessageCollection.SIMReplNoDataFound;
@@ -3025,14 +3024,7 @@ namespace BIA.BLL.BLLServices
 
                 if (dbssRespObj?["data"]?["attributes"] != null)
                 {
-                    if (dbssRespObj?["data"]?["attributes"]?["salesman-id"] != null)
-                    {
-                        retailer_code = dbssRespObj?["data"]?["attributes"]?["salesman-id"].ToString();
-                    }
-                    else
-                    {
-                        retailer_code = string.Empty;
-                    }
+                    retailer_code = dbssRespObj["data"]?["attributes"]?["salesman-id"]?.ToString() ?? string.Empty;
 
                     number_category = dbssRespObj["data"]?["attributes"]?["number-category"]?.ToString() ?? string.Empty;
 
