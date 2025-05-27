@@ -1116,7 +1116,7 @@ namespace BIA.BLL.BLLServices
             {
                 if(dbssRespObj != null)
                 {
-                    if (dbssRespObj?["data"]?.Any() != true)
+                    if (!dbssRespObj.ContainsKey("data") || dbssRespObj["data"] == null || !dbssRespObj["data"].Any())
                     {
                         raResp.result = false;
                         raResp.message = MessageCollection.SIMReplNoDataFound;
