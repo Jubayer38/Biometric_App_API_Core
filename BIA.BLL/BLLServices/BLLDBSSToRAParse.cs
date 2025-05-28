@@ -1123,7 +1123,9 @@ namespace BIA.BLL.BLLServices
                         return raResp;
                     }
 
-                    if (String.IsNullOrEmpty((string)dbssRespObj?["data"]?[0]?["attributes"]?["status"]))
+                    if (dbssRespObj["data"][0]["attributes"] == null ||
+                        dbssRespObj["data"][0]["attributes"]["status"] == null ||
+                        String.IsNullOrEmpty((string)dbssRespObj["data"][0]["attributes"]["status"]))
                     {
                         raResp.result = false;
                         raResp.message = "Msisdn status not found!";
