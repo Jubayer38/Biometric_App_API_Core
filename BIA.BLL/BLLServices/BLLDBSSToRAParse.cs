@@ -1139,8 +1139,8 @@ namespace BIA.BLL.BLLServices
                         return raResp;
                     }
 
-                    if ((string)dbssRespObj?["data"]?[0]?["attributes"]?["status"] != "active"
-                         && (string)dbssRespObj?["data"]?[0]?["attributes"]?["status"] != "idle")
+                    if ((string)dbssRespObj["data"][0]["attributes"]["status"] != "active"
+                         && (string)dbssRespObj["data"][0]["attributes"]["status"] != "idle")
                     {
                         raResp.result = false;
                         raResp.message = MessageCollection.MSISDNStatusNotActiveOrIdle;
