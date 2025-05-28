@@ -1130,7 +1130,7 @@ namespace BIA.BLL.BLLServices
                         return raResp;
                     }
 
-                    if ((string)dbssRespObj?["data"]?[0]?["attributes"]?["status"] == "terminated")
+                    if ((string)dbssRespObj["data"][0]["attributes"]["status"] == "terminated")
                     {
                         raResp.result = false;
                         raResp.message = "Msisdn is not valid for SIM replacemnt!";
