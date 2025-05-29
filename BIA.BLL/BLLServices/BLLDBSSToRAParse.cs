@@ -1167,15 +1167,15 @@ namespace BIA.BLL.BLLServices
                         raResp.message = "Subscription ID field empty!";
                         return raResp;
                     }
-                    if (dbssRespObj?["included"]?[0]?["attributes"] == null
-                        || dbssRespObj?["included"]?[1]?["attributes"] == null
-                        || dbssRespObj?["included"]?[2]?["attributes"] == null)
+                    if (dbssRespObj["included"][0]["attributes"] == null
+                        || dbssRespObj["included"][1]["attributes"] == null
+                        || dbssRespObj["included"][2]["attributes"] == null)
                     {
                         raResp.result = false;
                         raResp.message = "No data in attributes in included!";
                         return raResp;
                     }
-                    if (String.IsNullOrEmpty((string)dbssRespObj?["included"]?[1]?["attributes"]?["icc"]))
+                    if (String.IsNullOrEmpty((string)dbssRespObj["included"][1]["attributes"]?["icc"]))
                     {
                         raResp.result = false;
                         raResp.message = "Old SIM number not found!";
