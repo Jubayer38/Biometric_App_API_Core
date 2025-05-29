@@ -1151,7 +1151,7 @@ namespace BIA.BLL.BLLServices
                     }
 
                     if (dbssRespObj["included"] == null
-                        || dbssRespObj?["included"]?.Count() != 3)
+                        || dbssRespObj["included"].Count() != 3)
                     {
                         raResp.result = false;
                         raResp.message = "Data not found in include field!";
