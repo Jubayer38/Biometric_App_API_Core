@@ -1142,7 +1142,7 @@ namespace BIA.BLL.BLLServices
                     if ((string)dbssRespObj["data"][0]["attributes"]["status"] != "active"
                          && (string)dbssRespObj["data"][0]["attributes"]["status"] != "idle")
                     {
-                        raResp.result = false;
+                        raResp.result = false; 
                         raResp.message = MessageCollection.MSISDNStatusNotActiveOrIdle;
                         raResp.dob = null;
                         raResp.doc_id_number = null;

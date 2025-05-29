@@ -1049,8 +1049,14 @@ namespace BIA.Controllers
                             for (int i = 0; i < total; i++)
                             {
                                 var exception = "";
-                                try { exception = dbssResp?["data"]?[i]?["relationships"]?["barring"]?["data"]?["id"]?.ToString(); }
-                                catch (Exception) { throw new Exception("Data not found in relationships field!"); }
+                                try 
+                                { 
+                                    exception = dbssResp["data"][i]["relationships"]["barring"]["data"]["id"].ToString(); 
+                                }
+                                catch (Exception) 
+                                { 
+                                    throw new Exception("Data not found in relationships field!"); 
+                                }
                                 if (exception != null)
                                 {
                                     if (exception.Contains("BARALL") || exception.Contains("BAR_EXCEPTION"))
