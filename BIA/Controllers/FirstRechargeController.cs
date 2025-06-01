@@ -284,12 +284,20 @@ namespace BIA.Controllers
                                         message = apiResponse.message
                                     });
                                 }
-                                else
+                                else if (apiResponse != null && apiResponse.isError == true)
                                 {
                                     return Ok(new RechargeResponseModel()
                                     {
                                         isError = true,
-                                        message = apiResponse.message
+                                        message = apiResponse.message ?? "apiResponse.message not found"
+                                    });
+                                }
+                                else
+                                {
+                                    return Ok(new RechargeResponseModel()
+                                    {
+                                        isError = false,
+                                        message = "Invalid API Response"
                                     });
                                 }
 

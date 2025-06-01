@@ -1246,10 +1246,13 @@ namespace BIA.Common
                             Inforesponse = JsonConvert.DeserializeObject<SingleSourceRes>(responseContent);
                             log.res_time = DateTime.Now;
                             log.res_blob = byteArrayConverter.GetGenericJsonData(responseContent);
+                            
                             return new SingleSourceCheckResponseModelRevamp
                             {
                                 Status = Inforesponse != null && Inforesponse.Data != null ? Inforesponse.Data.is_active : false,
-                                Message = Inforesponse != null && Inforesponse.Data != null && Inforesponse.Data.is_active == true ? messages : Inforesponse.message
+                                Message = (Inforesponse != null && Inforesponse.Data != null && Inforesponse.Data.is_active == true)
+                                ? messages
+                                : (Inforesponse != null ? Inforesponse.message : string.Empty)
                             };
                         }
                         else

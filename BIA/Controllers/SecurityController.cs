@@ -64,7 +64,7 @@ namespace BIA.Controllers
             UserLogInAttempt loginAtmInfo = new UserLogInAttempt()
             {
                 userid = user.user_id,
-                is_success = user == null ? 0 : 1,
+                is_success = 1,
                 ip_address = GetIP(),
                 loginprovider = loginProvider,
                 deviceid = login.DeviceId,
@@ -201,7 +201,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttempt()
                     {
                         userid = user.user_id,
-                        is_success = user == null ? 0 : 1,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -444,7 +444,7 @@ namespace BIA.Controllers
                         loginAtmInfo = new UserLogInAttemptV2()
                         {
                             userid = user.user_id,
-                            is_success = user == null ? 0 : 1,
+                            is_success = 1,
                             ip_address = GetIP(),
                             loginprovider = loginProvider,
                             deviceid = login.DeviceId,
@@ -606,7 +606,7 @@ namespace BIA.Controllers
                         loginAtmInfo = new UserLogInAttemptV2()
                         {
                             userid = user.user_id,
-                            is_success = user == null ? 0 : 1,
+                            is_success = 1,
                             ip_address = GetIP(),
                             loginprovider = loginProvider,
                             deviceid = login.DeviceId,
@@ -788,7 +788,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttemptV2()
                     {
                         userid = user.user_id,
-                        is_success = user != null ? 1 : 0,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -1055,7 +1055,7 @@ namespace BIA.Controllers
                         loginAtmInfo = new UserLogInAttemptV2()
                         {
                             userid = user.user_id,
-                            is_success = user == null ? 0 : 1,
+                            is_success = 1,
                             ip_address = GetIP(),
                             loginprovider = loginProvider,
                             deviceid = login.DeviceId,
@@ -1159,7 +1159,7 @@ namespace BIA.Controllers
                 UserLogInAttempt loginAtmInfo = new UserLogInAttempt()
                 {
                     userid = user.user_id,
-                    is_success = user == null ? 0 : 1,
+                    is_success = 1,
                     ip_address = GetIP(),
                     loginprovider = loginProvider
                 };
@@ -2100,7 +2100,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttempt()
                     {
                         userid = user.user_id,
-                        is_success = user != null ? 1 : 0,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -2222,7 +2222,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttempt()
                     {
                         userid = user.user_id,
-                        is_success = user != null ? 1 : 0,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,

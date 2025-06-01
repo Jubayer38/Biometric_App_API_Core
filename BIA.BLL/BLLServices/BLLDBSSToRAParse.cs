@@ -862,29 +862,29 @@ namespace BIA.BLL.BLLServices
                     var includedObj = (JObject)dbssRespObj["included"].FirstOrDefault();
                     if (dataObj != null && dataObj.ContainsKey("attributes") && includedObj != null && includedObj.ContainsKey("attributes"))
                     {
-                        if (String.IsNullOrEmpty((string)dbssRespObj?["data"]?[0]?["id"]))
+                        if (String.IsNullOrEmpty((string)dbssRespObj["data"][0]?["id"]))
                         {
                             raResp.result = false;
                             raResp.message = "Subscription ID field empty!";
                             return raResp;
                         }
 
-                        if (String.IsNullOrEmpty((string)dbssRespObj?["included"]?[0]?["attributes"]?["id-document-type"]))
+                        if (String.IsNullOrEmpty((string)dbssRespObj["included"][0]?["attributes"]?["id-document-type"]))
                         {
                             raResp.result = false;
                             raResp.message = MessageCollection.DataNotFound;
                             return raResp;
                         }
 
-                        if ((string)dbssRespObj?["included"]?[0]?["attributes"]?["id-document-type"] != "national_id"
-                            && (string)dbssRespObj?["included"]?[0]?["attributes"]?["id-document-type"] != "smart_national_id")
+                        if ((string)dbssRespObj["included"][0]["attributes"]["id-document-type"] != "national_id"
+                            && (string)dbssRespObj["included"][0]["attributes"]["id-document-type"] != "smart_national_id")
                         {
                             raResp.result = false;
                             raResp.message = "Customer is not registered with National ID!";
                             return raResp;
                         }
 
-                        if (String.IsNullOrEmpty((string)dbssRespObj?["data"]?[0]?["attributes"]?["payment-type"]))
+                        if (String.IsNullOrEmpty((string)dbssRespObj["data"][0]["attributes"]?["payment-type"]))
                         {
                             raResp.result = false;
                             raResp.message = "payment-type field empty!";
