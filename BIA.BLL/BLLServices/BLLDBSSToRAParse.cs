@@ -1181,14 +1181,14 @@ namespace BIA.BLL.BLLServices
                         raResp.message = "Old SIM number not found!";
                         return raResp;
                     }
-                    if (String.IsNullOrEmpty((string)dbssRespObj["included"]?[1]?["attributes"]?["sim-type"]))
+                    if (String.IsNullOrEmpty((string)dbssRespObj["included"][1]["attributes"]?["sim-type"]))
                     {
                         raResp.result = false;
                         raResp.message = "sim-type not found!";
                         return raResp;
                     }
 
-                    if (dbssRespObj["included"]?[0]?["attributes"]?["is-company"] == null)
+                    if (dbssRespObj["included"][0]["attributes"]?["is-company"] == null)
                     {
                         raResp.result = false;
                         raResp.message = "Company information not found!";
@@ -1198,8 +1198,8 @@ namespace BIA.BLL.BLLServices
                         return raResp;
                     }
 
-                    if (dbssRespObj["included"]?[0]?["attributes"]?["id-document-type"] == null
-                         || String.IsNullOrEmpty((string)dbssRespObj["included"]?[0]?["attributes"]?["id-document-type"]))
+                    if (dbssRespObj["included"][0]["attributes"]?["id-document-type"] == null
+                         || String.IsNullOrEmpty((string)dbssRespObj["included"][0]["attributes"]["id-document-type"]))
                     {
                         raResp.result = false;
                         raResp.message = "id-document-type not found!";
@@ -1209,7 +1209,7 @@ namespace BIA.BLL.BLLServices
                         return raResp;
                     }
 
-                    string idDocumentType = (string)dbssRespObj["included"]?[0]?["attributes"]?["id-document-type"];
+                    string idDocumentType = (string)dbssRespObj["included"][0]["attributes"]["id-document-type"];
 
                     if (idDocumentType != "national_id"
                         && idDocumentType != "smart_national_id")
@@ -1221,7 +1221,7 @@ namespace BIA.BLL.BLLServices
                         raResp.saf_status = false;
                         return raResp;
                     }
-                    else if ((bool)dbssRespObj["included"]?[0]?["attributes"]?["is-company"] == true)
+                    else if ((bool)dbssRespObj["included"][0]["attributes"]?["is-company"] == true)
                     {
                         raResp.result = false;
                         raResp.message = "This MSISDN is not eligible for individual SIM replacement.";
@@ -1232,7 +1232,7 @@ namespace BIA.BLL.BLLServices
                     }
                     else
                     {
-                        var includedObj = dbssRespObj?["included"];
+                        var includedObj = dbssRespObj["included"];
 
                         string firstName = includedObj?[2]?["attributes"]?["first-name"]?.ToString() ?? string.Empty;
                         raResp.saf_status = !String.IsNullOrEmpty(firstName);
@@ -1242,7 +1242,7 @@ namespace BIA.BLL.BLLServices
                         raResp.dob = includedObj?[0]?["attributes"]?["date-of-birth"]?.ToString() ?? string.Empty;
                         raResp.doc_id_number = includedObj?[0]?["attributes"]?["id-document-number"]?.ToString() ?? string.Empty;
 
-                        if (dbssRespObj?["data"]?[0]?["id"] != null && int.TryParse(dbssRespObj?["data"]?[0]?["id"]?.ToString(), out var subscriptionId))
+                        if (dbssRespObj["data"][0]?["id"] != null && int.TryParse(dbssRespObj["data"][0]["id"]?.ToString(), out var subscriptionId))
                         {
                             raResp.dbss_subscription_id = subscriptionId;
                         }

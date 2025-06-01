@@ -3118,9 +3118,8 @@ namespace BIA.Controllers
 
                 var dbssRespModel = JsonConvert.DeserializeObject<DBSSOTPResponseRootobject>(dbssResp.ToString());
 
-                if (dbssRespModel != null && dbssRespModel.data == null)
+                if (dbssRespModel == null)
                 {
-                    log.is_success = 1;
                     return new OTPResponseRev()
                     {
                         isError = true,
@@ -3131,9 +3130,24 @@ namespace BIA.Controllers
                         }
                     };
                 }
+                else if (dbssRespModel.data == null)
+                {
+                    return new OTPResponseRev()
+                    {
+                        isError = true,
+                        message = MessageCollection.InvalidOTP,
+                        data = new OTPRespData()
+                        {
+                            is_otp_valid = false
+                        }
+                    };
+                }
+                else
+                {
+                    OtpResp = _dbssToRaParse.OTPRespParsingV2(dbssRespModel);
+                }
 
                 log.is_success = 1;
-                OtpResp = _dbssToRaParse.OTPRespParsingV2(dbssRespModel);
                 return OtpResp;
             }
             catch (WebException ex)
