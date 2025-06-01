@@ -1161,7 +1161,7 @@ namespace BIA.BLL.BLLServices
                         return raResp;
                     }
 
-                    if (dbssRespObj?["data"]?[0]?["id"] == null)
+                    if (dbssRespObj["data"][0]?["id"] == null)
                     {
                         raResp.result = false;
                         raResp.message = "Subscription ID field empty!";

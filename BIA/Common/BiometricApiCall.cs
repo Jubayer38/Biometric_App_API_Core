@@ -1257,7 +1257,9 @@ namespace BIA.Common
                             return new SingleSourceCheckResponseModelRevamp
                             {
                                 Status = Inforesponse != null && Inforesponse.Data != null ? Inforesponse.Data.is_active : false,
-                                Message = Inforesponse != null && Inforesponse.Data != null && Inforesponse.Data.is_active == true ? messages : Inforesponse.message
+                                Message = (Inforesponse != null && Inforesponse.Data != null && Inforesponse.Data.is_active == true)
+                                ? messages
+                                : (Inforesponse != null ? Inforesponse.message : string.Empty)
                             };
                         }
                     }
