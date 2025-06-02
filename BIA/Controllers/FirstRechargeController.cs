@@ -587,7 +587,7 @@ namespace BIA.Controllers
                             return Ok(new RechargeResponseModel()
                             {
                                 isError = false,
-                                message = apiResponse.message
+                                message = apiResponse?.message ?? "apiResponse.message not found"
                             });
                         }
                     }
