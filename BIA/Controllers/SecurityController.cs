@@ -48,7 +48,7 @@ namespace BIA.Controllers
             string encriptedPwd = Cryptography.Encrypt(login.Password, true);
             LoginUserInfoResponse user =await _bLLUserAuthenticaion.ValidateUser(login.UserName, encriptedPwd);
 
-            if (user.user_name == null)
+            if (user == null || user.user_name == null)
             {
                 return Ok(new LogInResponse()
                 {
@@ -81,7 +81,7 @@ namespace BIA.Controllers
 
             return Ok(new LogInResponse()
             {
-                SessionToken = GetEncriptedSecurityToken(loginProvider, user != null ? user.user_id:"", user != null ? user.user_name : "" , user != null ? user.distributor_code : "", login.DeviceId),
+                SessionToken = GetEncriptedSecurityToken(loginProvider, user.user_id, user.user_name, user.distributor_code, login.DeviceId),
                 ISAuthenticate = true,
                 AuthenticationMessage = MessageCollection.UserValidted,
                 UserName = login.UserName,
@@ -182,7 +182,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttempt()
                     {
                         userid = user.user_id,
-                        is_success = user == null ? 0 : 1,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -379,7 +379,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttemptV2()
                     {
                         userid = user.user_id,
-                        is_success = user == null ? 0 : 1,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -541,7 +541,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttemptV2()
                     {
                         userid = user.user_id,
-                        is_success = user == null ? 0 : 1,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -863,7 +863,7 @@ namespace BIA.Controllers
                         loginAtmInfo = new UserLogInAttemptV2()
                         {
                             userid = user.user_id,
-                            is_success = user != null ? 1 : 0,
+                            is_success = 1,
                             ip_address = GetIP(),
                             loginprovider = loginProvider,
                             deviceid = login.DeviceId,
@@ -982,7 +982,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttemptV2()
                     {
                         userid = user.user_id,
-                        is_success = user == null ? 0 : 1,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -2044,7 +2044,13 @@ namespace BIA.Controllers
         {
             try
             {
-                return Cryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormat, loginProvider, userId, userName, distributorCode, deviceId), true);
+                var token = Cryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormat, loginProvider, userId, userName, distributorCode, deviceId), true);
+                if (token == null)
+                {
+                    // Handle the null case appropriately
+                    throw new InvalidOperationException("Failed to generate encrypted security token.");
+                }
+                return token;
             }
             catch (Exception ex)
             {
@@ -2056,7 +2062,13 @@ namespace BIA.Controllers
         {
             try
             {
-                return AESCryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormatV2, loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid()));
+                var token = AESCryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormatV2, loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid()));
+                if (token == null)
+                {
+                    // Handle the null case appropriately
+                    throw new InvalidOperationException("Failed to generate encrypted security token.");
+                }
+                return token;
             }
             catch (Exception ex)
             {
@@ -2119,7 +2131,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttempt()
                     {
                         userid = user.user_id,
-                        is_success = user != null ? 1 : 0,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,
@@ -2241,7 +2253,7 @@ namespace BIA.Controllers
                     loginAtmInfo = new UserLogInAttempt()
                     {
                         userid = user.user_id,
-                        is_success = user != null ? 1 : 0,
+                        is_success = 1,
                         ip_address = GetIP(),
                         loginprovider = loginProvider,
                         deviceid = login.DeviceId,

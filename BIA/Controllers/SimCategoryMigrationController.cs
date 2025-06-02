@@ -1025,6 +1025,7 @@ namespace BIA.Controllers
             {
                 log.req_string = meathodUrl;
                 log.req_blob = byteArrayConverter.GetGenericJsonData(meathodUrl);
+
                 try
                 {
                     dbssResp = (JObject)genericApiCall.HttpGetRequest(meathodUrl, out reqTime, out resTime);
@@ -1033,40 +1034,50 @@ namespace BIA.Controllers
                 {
                     throw new Exception("DBSS: BAR " + ex.Message);
                 }
+
                 log.req_time = reqTime;
                 log.res_time = resTime;
+
+                if (dbssResp == null)
+                {
+                    log.res_time = resTime;
+                    log.res_string = "DBSS: BAR dbssResp is null";
+                    log.res_blob = byteArrayConverter.GetGenericJsonData("DBSS: BAR dbssResp is null");
+                    log.is_success = 0;
+                    return false;
+                }
+
                 log.res_string = JsonConvert.SerializeObject(dbssResp.ToString()).ToString();
                 log.res_blob = byteArrayConverter.GetGenericJsonData(dbssResp);
-                
-                if (dbssResp != null)
-                {
-                    if (dbssResp["data"] != null)
-                    {
-                        int total = dbssResp["data"].Count();
 
-                        if (total > 0)
+
+                if (dbssResp["data"] != null)
+                {
+                    int total = dbssResp["data"].Count();
+
+                    if (total > 0)
+                    {
+                        for (int i = 0; i < total; i++)
                         {
-                            for (int i = 0; i < total; i++)
+                            var exception = "";
+                            try
                             {
-                                var exception = "";
-                                try 
-                                { 
-                                    exception = dbssResp["data"][i]["relationships"]["barring"]["data"]["id"].ToString(); 
-                                }
-                                catch (Exception) 
-                                { 
-                                    throw new Exception("Data not found in relationships field!"); 
-                                }
-                                if (exception != null)
+                                exception = dbssResp["data"][i]["relationships"]["barring"]["data"]["id"].ToString();
+                            }
+                            catch (Exception)
+                            {
+                                throw new Exception("Data not found in relationships field!");
+                            }
+                            if (exception != null)
+                            {
+                                if (exception.Contains("BARALL") || exception.Contains("BAR_EXCEPTION"))
                                 {
-                                    if (exception.Contains("BARALL") || exception.Contains("BAR_EXCEPTION"))
-                                    {
-                                        throw new Exception("Customer is barred. Pls contact with your supervisor.");
-                                    }
+                                    throw new Exception("Customer is barred. Pls contact with your supervisor.");
                                 }
                             }
                         }
-                    }                    
+
+                    }
                 }
 
                 log.is_success = 1;

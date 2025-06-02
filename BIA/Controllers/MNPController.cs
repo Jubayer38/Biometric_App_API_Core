@@ -1259,7 +1259,11 @@ namespace BIA.Controllers
                         message = orderRes.message
                     });
                 }
-                if (orderRes?.data?.request_id != null && double.TryParse(orderRes.data.request_id.ToString(), out var requestId))
+
+                var data = orderRes?.data;
+                var requestIdObj = data?.request_id;
+
+                if (requestIdObj != null && double.TryParse(requestIdObj.ToString(), out var requestId))
                 {
                     model.bi_token_number = requestId;
                 }
@@ -1840,7 +1844,11 @@ namespace BIA.Controllers
                         message = orderRes.message
                     });
                 }
-                model.bi_token_number = orderRes != null && orderRes.data.request_id != null ? Convert.ToDouble(orderRes.data.request_id) : 0;
+                
+                model.bi_token_number = (orderRes != null && orderRes.data != null && orderRes.data.request_id != null)
+                ? Convert.ToDouble(orderRes.data.request_id)
+                : 0;
+
                 #endregion
                 #region unpaired MSISDN validation (MNP)
 

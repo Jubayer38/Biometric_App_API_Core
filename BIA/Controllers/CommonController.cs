@@ -9004,7 +9004,7 @@ namespace BIA.Controllers
                     {
                         if (security.IsVallid == true)
                         {
-                            if (model != null && !String.IsNullOrEmpty(model.retailer_code))
+                            if (!String.IsNullOrEmpty(model.retailer_code))
                             {
                                 string username = model.retailer_code.Substring(1);
                                 //if (!username.Equals(security.UserName))

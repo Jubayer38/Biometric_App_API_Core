@@ -922,7 +922,7 @@ namespace BIA.BLL.BLLServices
                                     raResp.result = true;
                                     raResp.message = MessageCollection.Success;
 
-                                    var dataObjv2 = dbssRespObj?["data"]?[0];
+                                    var dataObjv2 = dbssRespObj["data"][0];
                                     raResp.subscription_id = dataObjv2?["id"] != null && long.TryParse(dataObjv2["id"]?.ToString(), out var subscriptionId)
                                                               ? subscriptionId
                                                               : 0;
