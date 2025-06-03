@@ -165,16 +165,9 @@ namespace BIA.Controllers
                     });
                 }
 
-                if (orderRes != null && orderRes.data != null && orderRes.data.request_id != null)
+                if (double.TryParse(orderRes?.data?.request_id?.ToString(), out var requestId))
                 {
-                    if (double.TryParse(orderRes.data.request_id, out var requestId))
-                    {
-                        model.bi_token_number = requestId;
-                    }
-                    else
-                    {
-                        model.bi_token_number = 0;
-                    }
+                    model.bi_token_number = requestId;
                 }
                 else
                 {
@@ -540,16 +533,9 @@ namespace BIA.Controllers
                     });
                 }
 
-                if (orderRes != null && orderRes.data != null && orderRes.data.request_id != null)
+                if (double.TryParse(orderRes?.data?.request_id?.ToString(), out var requestId))
                 {
-                    if (double.TryParse(orderRes.data.request_id, out var requestId))
-                    {
-                        model.bi_token_number = requestId;
-                    }
-                    else
-                    {
-                        model.bi_token_number = 0;
-                    }
+                    model.bi_token_number = requestId;
                 }
                 else
                 {
