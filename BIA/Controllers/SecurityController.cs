@@ -2042,38 +2042,24 @@ namespace BIA.Controllers
 
         private string GetEncriptedSecurityToken(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
-            try
+            var token = Cryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormat, loginProvider, userId, userName, distributorCode, deviceId),true);
+            if (token == null)
             {
-                var token = Cryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormat, loginProvider, userId, userName, distributorCode, deviceId), true);
-                if (token == null)
-                {
-                    // Handle the null case appropriately
-                    throw new InvalidOperationException("Failed to generate encrypted security token.");
-                }
-                return token;
+                // Handle the null case appropriately
+                throw new InvalidOperationException("Failed to generate encrypted security token.");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return token;
         }
 
         private string GetEncriptedSecurityTokenV2(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
-            try
+            var token = AESCryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormatV2, loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid()));
+            if (token == null)
             {
-                var token = AESCryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormatV2, loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid()));
-                if (token == null)
-                {
-                    // Handle the null case appropriately
-                    throw new InvalidOperationException("Failed to generate encrypted security token.");
-                }
-                return token;
+                // Handle the null case appropriately
+                throw new InvalidOperationException("Failed to generate encrypted security token.");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return token;
         }
 
         /// <summary>

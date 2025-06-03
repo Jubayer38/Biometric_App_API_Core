@@ -1092,7 +1092,7 @@ namespace BIA.Controllers
                 log.req_time = reqTime;
                 log.res_time = resTime;
                 log.res_string = JsonConvert.SerializeObject(dbssResp != null ? dbssResp.ToString() : ex.Message).ToString();
-                string errorMessage = dbssResp.ToString() != null ? dbssResp.ToString() : ex.Message.ToString();
+                string errorMessage = dbssResp != null ? dbssResp.ToString() : ex.Message;
                 log.res_blob = byteArrayConverter.GetGenericJsonData(errorMessage);
                 log.message = error != null ? error.error_description : null;
                 log.error_code = error != null ? error.error_code : null;

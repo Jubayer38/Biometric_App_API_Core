@@ -164,10 +164,22 @@ namespace BIA.Controllers
                         message = orderRes.message
                     });
                 }
-                
-                model.bi_token_number = (orderRes != null && orderRes.data != null && orderRes.data.request_id != null)
-                ? Convert.ToDouble(orderRes.data.request_id)
-                : 0;
+
+                if (orderRes != null && orderRes.data != null && orderRes.data.request_id != null)
+                {
+                    if (double.TryParse(orderRes.data.request_id.ToString(), out var requestId))
+                    {
+                        model.bi_token_number = requestId;
+                    }
+                    else
+                    {
+                        model.bi_token_number = 0;
+                    }
+                }
+                else
+                {
+                    model.bi_token_number = 0;
+                }
                 //}
 
                 //if (model.bi_token_number != null || model.bi_token_number > 1)
@@ -527,10 +539,22 @@ namespace BIA.Controllers
                         message = orderRes.message
                     });
                 }
-                
-                model.bi_token_number = (orderRes != null && orderRes.data != null && orderRes.data.request_id != null)
-                ? Convert.ToDouble(orderRes.data.request_id)
-                : 0;
+
+                if (orderRes != null && orderRes.data != null && orderRes.data.request_id != null)
+                {
+                    if (double.TryParse(orderRes.data.request_id.ToString(), out var requestId))
+                    {
+                        model.bi_token_number = requestId;
+                    }
+                    else
+                    {
+                        model.bi_token_number = 0;
+                    }
+                }
+                else
+                {
+                    model.bi_token_number = 0;
+                }
 
                 #endregion
                 #region unpaired MSISDN validation (MNP)
