@@ -1843,7 +1843,7 @@ namespace BIA.Controllers
                 }
 
                 model.bi_token_number = 0;
-                if (orderRes != null)
+                if (orderRes != null) 
                 {
                     if (double.TryParse(orderRes.data.request_id, out var requestId))
                     {
