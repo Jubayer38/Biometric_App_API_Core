@@ -1842,13 +1842,13 @@ namespace BIA.Controllers
                     });
                 }
 
-                if (double.TryParse(orderRes?.data?.request_id?.ToString(), out var requestId))
+                model.bi_token_number = 0;
+                if (orderRes != null)
                 {
-                    model.bi_token_number = requestId;
-                }
-                else
-                {
-                    model.bi_token_number = 0;
+                    if (double.TryParse(orderRes.data.request_id, out var requestId))
+                    {
+                        model.bi_token_number = requestId;
+                    }
                 }
 
                 #endregion
