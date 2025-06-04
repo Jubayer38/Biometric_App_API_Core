@@ -1833,22 +1833,31 @@ namespace BIA.Controllers
                 model.order_booking_flag = 800;
                 model.is_esim = 1;
                 orderRes = await _bLLOrder.SubmitOrderV7(model, loginProviderId);
-                if (orderRes.isError)
+
+                if (orderRes != null)
+                {
+                    if (orderRes.isError)
+                    {
+                        return Ok(new SendOrderResponseRev()
+                        {
+                            isError = true,
+                            message = orderRes.message
+                        });
+                    }
+                }
+                else
                 {
                     return Ok(new SendOrderResponseRev()
                     {
                         isError = true,
-                        message = orderRes.message
+                        message = "Order submission failed."
                     });
                 }
 
                 model.bi_token_number = 0;
-                if (orderRes != null) 
+                if (double.TryParse(orderRes.data.request_id, out var requestId))
                 {
-                    if (double.TryParse(orderRes.data.request_id, out var requestId))
-                    {
-                        model.bi_token_number = requestId;
-                    }
+                    model.bi_token_number = requestId;
                 }
 
                 #endregion
