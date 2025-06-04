@@ -1251,22 +1251,31 @@ namespace BIA.Controllers
                 ///if (model.bi_token_number == null || model.bi_token_number == 0)
                 //{
                 orderRes = await _bLLOrder.SubmitOrderV7(model, loginProviderId);
-                if (orderRes.isError)
+
+                if (orderRes != null)
+                {
+                    if (orderRes.isError)
+                    {
+                        return Ok(new SendOrderResponseRev()
+                        {
+                            isError = true,
+                            message = orderRes.message
+                        });
+                    }
+                }
+                else
                 {
                     return Ok(new SendOrderResponseRev()
                     {
                         isError = true,
-                        message = orderRes.message
+                        message = "Order submission failed."
                     });
                 }
 
-                if (double.TryParse(orderRes?.data?.request_id?.ToString(), out var requestId))
+                model.bi_token_number = 0;
+                if (double.TryParse(orderRes.data.request_id, out var requestId))
                 {
                     model.bi_token_number = requestId;
-                }
-                else
-                {
-                    model.bi_token_number = 0;
                 }
                 //}
 
