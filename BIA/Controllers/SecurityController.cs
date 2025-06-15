@@ -2055,14 +2055,17 @@ namespace BIA.Controllers
         {
             try
             {
-                // Handle null deviceId by providing a default value or empty string
-                string deviceIdValue = deviceId?.ToString() ?? string.Empty;
-                return AESCryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormatV2, loginProvider, userId, userName, distributorCode, deviceIdValue, Guid.NewGuid()));
+                var rawString = string.Format(
+                    StringFormatCollection.AccessTokenFormatV2,
+                    loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid());
+
+                var encrypted = AESCryptography.Encrypt(rawString);
+
+                return encrypted ?? string.Empty; // Coverity-safe return
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Log the exception for debugging purposes (optional, based on requirements)
-                throw new InvalidOperationException("Failed to generate encrypted security token.", ex);
+                throw;
             }
         }
 

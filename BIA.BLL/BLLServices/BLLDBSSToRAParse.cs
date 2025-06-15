@@ -1068,7 +1068,17 @@ namespace BIA.BLL.BLLServices
                             raResp.message = MessageCollection.MSISDNValid;
                             raResp.dob = dob;
                             raResp.doc_id_number = docIdNumber;
-                            raResp.dbss_subscription_id = (int)dbssRespObj?["data"]?[0]?["id"];
+
+                            var idToken = dbssRespObj["data"]?["id"];
+                            if (idToken != null && long.TryParse(idToken.ToString(), out var subscriptionId))
+                            {
+                                raResp.dbss_subscription_id = subscriptionId;
+                            }
+                            else
+                            {
+                                raResp.dbss_subscription_id = 0; // or handle as appropriate for your logic
+                            }
+
                             raResp.old_sim_number = (string)dbssRespObj?["included"]?[0]?["attributes"]?["icc"];
                             raResp.old_sim_type = (string)dbssRespObj?["included"]?[0]?["attributes"]?["sim-type"];
                         }
@@ -1221,7 +1231,13 @@ namespace BIA.BLL.BLLServices
                         raResp.saf_status = false;
                         return raResp;
                     }
-                    else if ((bool)dbssRespObj["included"][0]["attributes"]?["is-company"] == true)
+                    else if (
+                            dbssRespObj["included"] != null &&
+                            dbssRespObj["included"].Count() > 0 &&
+                            dbssRespObj["included"][0]?["attributes"] != null &&
+                            dbssRespObj["included"][0]["attributes"]["is-company"] != null &&
+                            (bool)dbssRespObj["included"][0]["attributes"]["is-company"] == true
+                            )
                     {
                         raResp.result = false;
                         raResp.message = "This MSISDN is not eligible for individual SIM replacement.";
