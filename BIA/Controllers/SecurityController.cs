@@ -2044,7 +2044,7 @@ namespace BIA.Controllers
         {
             try
             {
-                // Validate input parameters
+                // Step 1: Validate all inputs
                 if (string.IsNullOrEmpty(loginProvider))
                     throw new ArgumentNullException(nameof(loginProvider), "Login provider cannot be null or empty.");
                 if (string.IsNullOrEmpty(userId))
@@ -2056,63 +2056,62 @@ namespace BIA.Controllers
                 if (string.IsNullOrEmpty(StringFormatCollection.AccessTokenFormat))
                     throw new ArgumentNullException(nameof(StringFormatCollection.AccessTokenFormat), "Format string cannot be null or empty.");
 
-                // Safely handle deviceId
+                // Step 2: Safely handle deviceId
                 string deviceIdValue = deviceId?.ToString() ?? string.Empty;
 
-                // Generate formatted string
-                string formattedToken = String.Format(StringFormatCollection.AccessTokenFormat, loginProvider, userId, userName, distributorCode, deviceIdValue);
+                // Step 3: Prepare arguments for String.Format
+                object[] formatArgs = new object[] { loginProvider, userId, userName, distributorCode, deviceIdValue };
 
-                // Ensure formatted string is not null before encryption
-                if (formattedToken == null)
-                    throw new InvalidOperationException("Formatted token string is null.");
+                // Step 4: Perform string formatting
+                string formattedToken;
+                try
+                {
+                    formattedToken = String.Format(StringFormatCollection.AccessTokenFormat, formatArgs);
+                }
+                catch (FormatException ex)
+                {
+                    throw new InvalidOperationException($"String formatting failed with format: {StringFormatCollection.AccessTokenFormatV2}", ex);
+                }
 
-                // Encrypt the formatted string
-                return Cryptography.Encrypt(formattedToken, true);
+                // Step 5: Validate formatted string
+                if (string.IsNullOrEmpty(formattedToken))
+                    throw new InvalidOperationException("Formatted token string is null or empty.");
+
+                // Step 6: Perform encryption
+                string encryptedToken = Cryptography.Encrypt(formattedToken,true);
+                if (string.IsNullOrEmpty(encryptedToken))
+                    throw new InvalidOperationException("Encryption resulted in a null or empty string.");
+
+                return encryptedToken;
             }
             catch (Exception ex)
             {
-                // Wrap exception with context for better debugging
-                throw new InvalidOperationException("Failed to generate encrypted security token.", ex);
+                // Wrap exception with additional context
+                throw new InvalidOperationException(
+                    $"Failed to generate encrypted security token. Format: {StringFormatCollection.AccessTokenFormatV2}, " +
+                    $"loginProvider: {loginProvider}, userId: {userId}, userName: {userName}, distributorCode: {distributorCode}, deviceId: {deviceId}",
+                    ex);
             }
         }
 
         private string GetEncriptedSecurityTokenV2(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
-            if (string.IsNullOrEmpty(loginProvider) ||
-        string.IsNullOrEmpty(userId) ||
-        string.IsNullOrEmpty(userName) ||
-        string.IsNullOrEmpty(distributorCode))
-            {
-                throw new ArgumentException("Required parameters cannot be null or empty.");
-            }
-
             try
             {
-                string formattedToken = String.Format(
+                string rawInput = string.Format(
                     StringFormatCollection.AccessTokenFormatV2,
-                    loginProvider,
-                    userId,
-                    userName,
-                    distributorCode,
-                    deviceId,
-                    Guid.NewGuid()
-                );
+                    loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid());
 
-                if (string.IsNullOrEmpty(formattedToken))
+                string? encrypted = AESCryptography.Encrypt(rawInput);
+
+                if (encrypted == null)
                 {
-                    throw new InvalidOperationException("Formatted token string is null or empty.");
+                    throw new InvalidOperationException("Encryption returned null, which is not allowed.");
                 }
 
-                string encryptedToken = AESCryptography.Encrypt(formattedToken);
-
-                if (string.IsNullOrEmpty(encryptedToken))
-                {
-                    throw new InvalidOperationException("Encryption returned a null or empty value.");
-                }
-
-                return encryptedToken;
+                return encrypted;
             }
-            catch (Exception) // Avoid `throw ex;` to preserve stack trace
+            catch (Exception)
             {
                 throw;
             }
