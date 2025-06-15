@@ -1676,7 +1676,17 @@ namespace BIA.BLL.BLLServices
                             }
                         }
                     }
-                    raResp.dbss_subscription_id = (int)dbssRespObj["data"]?["id"];
+
+                    var idToken = dbssRespObj["data"]?["id"];
+                    if (idToken != null && long.TryParse(idToken.ToString(), out var subscriptionId))
+                    {
+                        raResp.dbss_subscription_id = subscriptionId;
+                    }
+                    else
+                    {
+                        raResp.dbss_subscription_id = 0; // or handle as appropriate for your logic
+                    }
+
                     raResp.result = true;
                     raResp.message = MessageCollection.MSISDNValid;
                     return raResp;
