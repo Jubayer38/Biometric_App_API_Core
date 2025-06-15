@@ -2053,12 +2053,8 @@ namespace BIA.Controllers
 
         private string GetEncriptedSecurityTokenV2(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
-            var token = AESCryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormatV2, loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid()));
-            if (token == null)
-            {
-                // Handle the null case appropriately
-                throw new InvalidOperationException("Failed to generate encrypted security token.");
-            }
+            var token = AESCryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormatV2, loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid())) 
+                ?? throw new InvalidOperationException("Failed to generate encrypted security token.");
             return token;
         }
 

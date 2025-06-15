@@ -3933,7 +3933,7 @@ namespace BIA.Controllers
                     {
                         if (dbssRespModel.data.Count < 1)
                         {
-                            new Exception("No data found. API url: " + AppSettingsWrapper.ApiBaseUrl + apiUrl);
+                            throw new Exception("No data found. API url: " + AppSettingsWrapper.ApiBaseUrl + apiUrl);
                         }
                         else
                         {
@@ -3949,7 +3949,7 @@ namespace BIA.Controllers
                     }
                     else
                     {
-                        new Exception("No data found. API url: " + AppSettingsWrapper.ApiBaseUrl + apiUrl);
+                        throw new Exception("No data found. API url: " + AppSettingsWrapper.ApiBaseUrl + apiUrl);
                     }
                 }
             }
