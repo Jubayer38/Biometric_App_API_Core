@@ -2066,7 +2066,7 @@ namespace BIA.Controllers
                 string formattedToken;
                 try
                 {
-                    formattedToken = String.Format(StringFormatCollection.AccessTokenFormat, formatArgs);
+                    formattedToken = String.Format(StringFormatCollection.AccessTokenFormat, formatArgs); 
                 }
                 catch (FormatException ex)
                 {
@@ -2100,7 +2100,7 @@ namespace BIA.Controllers
             {
                 string rawInput = string.Format(
                     StringFormatCollection.AccessTokenFormatV2,
-                    loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid());
+                    loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid()); 
 
                 string? encrypted = AESCryptography.Encrypt(rawInput);
 
