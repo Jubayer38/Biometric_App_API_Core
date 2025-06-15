@@ -2042,28 +2042,77 @@ namespace BIA.Controllers
 
         private string GetEncriptedSecurityToken(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
-            var token = Cryptography.Encrypt(String.Format(StringFormatCollection.AccessTokenFormat, loginProvider, userId, userName, distributorCode, deviceId),true);
-            if (token == null)
+            try
             {
-                // Handle the null case appropriately
-                throw new InvalidOperationException("Failed to generate encrypted security token.");
+                // Validate input parameters
+                if (string.IsNullOrEmpty(loginProvider))
+                    throw new ArgumentNullException(nameof(loginProvider), "Login provider cannot be null or empty.");
+                if (string.IsNullOrEmpty(userId))
+                    throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+                if (string.IsNullOrEmpty(userName))
+                    throw new ArgumentNullException(nameof(userName), "User name cannot be null or empty.");
+                if (string.IsNullOrEmpty(distributorCode))
+                    throw new ArgumentNullException(nameof(distributorCode), "Distributor code cannot be null or empty.");
+                if (string.IsNullOrEmpty(StringFormatCollection.AccessTokenFormat))
+                    throw new ArgumentNullException(nameof(StringFormatCollection.AccessTokenFormat), "Format string cannot be null or empty.");
+
+                // Safely handle deviceId
+                string deviceIdValue = deviceId?.ToString() ?? string.Empty;
+
+                // Generate formatted string
+                string formattedToken = String.Format(StringFormatCollection.AccessTokenFormat, loginProvider, userId, userName, distributorCode, deviceIdValue);
+
+                // Ensure formatted string is not null before encryption
+                if (formattedToken == null)
+                    throw new InvalidOperationException("Formatted token string is null.");
+
+                // Encrypt the formatted string
+                return Cryptography.Encrypt(formattedToken, true);
             }
-            return token;
+            catch (Exception ex)
+            {
+                // Wrap exception with context for better debugging
+                throw new InvalidOperationException("Failed to generate encrypted security token.", ex);
+            }
         }
 
         private string GetEncriptedSecurityTokenV2(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
+            if (string.IsNullOrEmpty(loginProvider) ||
+        string.IsNullOrEmpty(userId) ||
+        string.IsNullOrEmpty(userName) ||
+        string.IsNullOrEmpty(distributorCode))
+            {
+                throw new ArgumentException("Required parameters cannot be null or empty.");
+            }
+
             try
             {
-                var rawString = string.Format(
+                string formattedToken = String.Format(
                     StringFormatCollection.AccessTokenFormatV2,
-                    loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid());
+                    loginProvider,
+                    userId,
+                    userName,
+                    distributorCode,
+                    deviceId,
+                    Guid.NewGuid()
+                );
 
-                var encrypted = AESCryptography.Encrypt(rawString);
+                if (string.IsNullOrEmpty(formattedToken))
+                {
+                    throw new InvalidOperationException("Formatted token string is null or empty.");
+                }
 
-                return encrypted ?? string.Empty; // Coverity-safe return
+                string encryptedToken = AESCryptography.Encrypt(formattedToken);
+
+                if (string.IsNullOrEmpty(encryptedToken))
+                {
+                    throw new InvalidOperationException("Encryption returned a null or empty value.");
+                }
+
+                return encryptedToken;
             }
-            catch (Exception)
+            catch (Exception) // Avoid `throw ex;` to preserve stack trace
             {
                 throw;
             }
