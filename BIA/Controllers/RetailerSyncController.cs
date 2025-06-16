@@ -49,7 +49,7 @@ namespace BIA.Controllers
                     .Build();
 
                     biometricUserName = SettingsValues.GetUserStatusUpdateUserName();
-                    biometricPassword = SettingsValues.GetUserStatusUpdatePassword();
+                    biometricPassword = SettingsValues.GetUserStatusUpdatePassword(); 
                 }
                 catch
                 { }
