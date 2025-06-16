@@ -46,7 +46,7 @@ namespace BIA.Entity.Utility
             else
                 keyArray = UTF8Encoding.UTF8.GetBytes("bl_smart_pos");
 
-            using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
+            using (Aes tdes = Aes.Create())
             {
                 tdes.Key = keyArray;
                 tdes.Mode = CipherMode.CBC;
@@ -96,7 +96,7 @@ namespace BIA.Entity.Utility
                 keyArray = UTF8Encoding.UTF8.GetBytes("bl_smart_pos");
             }
 
-            using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
+            using (Aes tdes = Aes.Create())
             {
                 tdes.Key = keyArray;
                 tdes.Mode = CipherMode.CBC;

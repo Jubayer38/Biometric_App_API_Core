@@ -5081,15 +5081,7 @@ namespace BIA.Controllers
 
                 var result = await _bllOrder.GetOrderInfoByTokenNo(model.token_id);
 
-
-                if (result.result == false)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -5118,14 +5110,7 @@ namespace BIA.Controllers
                 var result = await _bllOrder.GetOrderInfoByTokenNo(model.token_id);
 
 
-                if (result.result == false)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -5170,14 +5155,7 @@ namespace BIA.Controllers
 
                 var result = await _bllOrder.GetOrderInfoByTokenNoV2(model.token_id);
 
-                if (result.isError == true)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+                return Ok(result);
             }
             catch (Exception ex)
             {

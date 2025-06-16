@@ -41,9 +41,13 @@ namespace BIA.Controllers
                 decimal? result = 0;
                 log.req_blob = bL_Json.GetGenericJsonData(model);
                 log.req_time = DateTime.Now;
+
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+                    var configuration = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .Build();
+
                     biometricUserName = SettingsValues.GetUserStatusUpdateUserName();
                     biometricPassword = SettingsValues.GetUserStatusUpdatePassword();
                 }

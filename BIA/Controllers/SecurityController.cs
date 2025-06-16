@@ -1164,8 +1164,7 @@ namespace BIA.Controllers
                     loginprovider = loginProvider
                 };
 
-                Thread logThread = new Thread(() => _bLLUserAuthenticaion.SaveLoginAtmInfo(loginAtmInfo));
-                logThread.Start();
+                _ = Task.Run(() => _bLLUserAuthenticaion.SaveLoginAtmInfo(loginAtmInfo));   // Save login attempt info in background thread
 
                 int isEligible = 0;
                 try
