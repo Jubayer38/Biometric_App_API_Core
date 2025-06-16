@@ -44,10 +44,6 @@ namespace BIA.Controllers
 
                 try
                 {
-                    var configuration = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .Build();
-
                     biometricUserName = SettingsValues.GetUserStatusUpdateUserName();
                     biometricPassword = SettingsValues.GetUserStatusUpdatePassword(); 
                 }

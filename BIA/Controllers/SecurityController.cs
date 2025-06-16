@@ -27,13 +27,15 @@ namespace BIA.Controllers
         private readonly BLLLog _bllLog;
         private readonly BaseController _bio;
         private readonly ApiManager _apiManager;
+        private readonly IConfiguration _configuration;
 
-        public SecurityController(BLLUserAuthenticaion auth,BLLLog bllLog, BaseController bio, ApiManager apiManager)
+        public SecurityController(BLLUserAuthenticaion auth,BLLLog bllLog, BaseController bio, ApiManager apiManager, IConfiguration configuration)
         {
             _bLLUserAuthenticaion = auth;
             _bllLog = bllLog;
             _bio = bio;
             _apiManager = apiManager;
+            _configuration = configuration;
         }
         // POST: api/Security/Login
         /// <summary>
@@ -1169,9 +1171,7 @@ namespace BIA.Controllers
                 int isEligible = 0;
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    isEligible = Convert.ToInt32(configuration.GetSection("AppSettings:IsEligibleAES").Value);
+                    isEligible = Convert.ToInt32(_configuration.GetSection("AppSettings:IsEligibleAES").Value);
                 }
                 catch { }
 
@@ -2038,7 +2038,6 @@ namespace BIA.Controllers
             }
         }
 
-
         private string GetEncriptedSecurityToken(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
             try
@@ -2052,32 +2051,35 @@ namespace BIA.Controllers
                     throw new ArgumentNullException(nameof(userName), "User name cannot be null or empty.");
                 if (string.IsNullOrEmpty(distributorCode))
                     throw new ArgumentNullException(nameof(distributorCode), "Distributor code cannot be null or empty.");
-                if (string.IsNullOrEmpty(StringFormatCollection.AccessTokenFormat))
-                    throw new ArgumentNullException(nameof(StringFormatCollection.AccessTokenFormat), "Format string cannot be null or empty.");
 
-                // Step 2: Safely handle deviceId
+                // Step 2: Validate format string
+                string formatString = StringFormatCollection.AccessTokenFormat;
+                if (string.IsNullOrEmpty(formatString))
+                    throw new InvalidOperationException("AccessTokenFormatV2 is not configured in appsettings.json.");
+
+                // Step 3: Safely handle deviceId
                 string deviceIdValue = deviceId?.ToString() ?? string.Empty;
 
-                // Step 3: Prepare arguments for String.Format
+                // Step 4: Prepare arguments for String.Format
                 object[] formatArgs = new object[] { loginProvider, userId, userName, distributorCode, deviceIdValue };
 
-                // Step 4: Perform string formatting
+                // Step 5: Perform string formatting
                 string formattedToken;
                 try
                 {
-                    formattedToken = String.Format(StringFormatCollection.AccessTokenFormat, formatArgs); 
+                    formattedToken = String.Format(formatString, formatArgs);
                 }
                 catch (FormatException ex)
                 {
-                    throw new InvalidOperationException($"String formatting failed with format: {StringFormatCollection.AccessTokenFormatV2}", ex);
+                    throw new InvalidOperationException($"String formatting failed with format: {formatString}", ex);
                 }
 
-                // Step 5: Validate formatted string
+                // Step 6: Validate formatted string
                 if (string.IsNullOrEmpty(formattedToken))
                     throw new InvalidOperationException("Formatted token string is null or empty.");
 
-                // Step 6: Perform encryption
-                string encryptedToken = Cryptography.Encrypt(formattedToken,true);
+                // Step 7: Perform encryption
+                string encryptedToken = Cryptography.Encrypt(formattedToken, true);
                 if (string.IsNullOrEmpty(encryptedToken))
                     throw new InvalidOperationException("Encryption resulted in a null or empty string.");
 
@@ -2085,9 +2087,8 @@ namespace BIA.Controllers
             }
             catch (Exception ex)
             {
-                // Wrap exception with additional context
                 throw new InvalidOperationException(
-                    $"Failed to generate encrypted security token. Format: {StringFormatCollection.AccessTokenFormatV2}, " +
+                    $"Failed to generate encrypted security token. Format: {StringFormatCollection.AccessTokenFormat}, " +
                     $"loginProvider: {loginProvider}, userId: {userId}, userName: {userName}, distributorCode: {distributorCode}, deviceId: {deviceId}",
                     ex);
             }
@@ -2095,25 +2096,34 @@ namespace BIA.Controllers
 
         private string GetEncriptedSecurityTokenV2(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
+            string encryptedToken;
+
             try
             {
-                string rawInput = string.Format(
+                string formatted = string.Format(
                     StringFormatCollection.AccessTokenFormatV2,
-                    loginProvider, userId, userName, distributorCode, deviceId, Guid.NewGuid()); 
+                    loginProvider,
+                    userId,
+                    userName,
+                    distributorCode,
+                    deviceId,
+                    Guid.NewGuid());
 
-                string? encrypted = AESCryptography.Encrypt(rawInput);
+                var encrypted = AESCryptography.Encrypt(formatted);
 
                 if (encrypted == null)
                 {
-                    throw new InvalidOperationException("Encryption returned null, which is not allowed.");
+                    throw new InvalidOperationException("Encryption returned null.");
                 }
 
-                return encrypted;
+                encryptedToken = encrypted;
             }
             catch (Exception)
             {
                 throw;
             }
+
+            return encryptedToken;
         }
 
         /// <summary>
