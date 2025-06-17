@@ -1596,8 +1596,7 @@ namespace BIA.BLL.BLLServices
                     string[] dedicatedArr = null;
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                        dedicatedID = configuration.GetSection("AppSettings:dedicated_Ac_Id").Value;
+                        dedicatedID = _configuration.GetSection("AppSettings:dedicated_Ac_Id").Value;
                         //dedicatedID = System.Configuration.ConfigurationManager.AppSettings["dedicated_Ac_Id"]; 
                     }
                     catch (Exception) { throw new Exception("Data not found in web config."); }
@@ -3030,9 +3029,7 @@ namespace BIA.BLL.BLLServices
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    category_config = configuration.GetSection("AppSettings:number_category").Value;
+                    category_config = _configuration.GetSection("AppSettings:number_category").Value;
                 }
                 catch (Exception) { throw new Exception("Key not found in Web config"); }
 
@@ -3980,9 +3977,7 @@ namespace BIA.BLL.BLLServices
                     {
                         try
                         {
-                            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                            category_config = configuration.GetSection("AppSettings:number_category").Value;
+                            category_config = _configuration.GetSection("AppSettings:number_category").Value;
 
                         }
                         catch (Exception) { throw new Exception("Key not found in Web config"); }

@@ -9,6 +9,8 @@ namespace BIA.Entity.Collections
 {
     public class StringFormatCollection
     {
+        private static readonly IConfigurationRoot _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+
         public static string DBSSDOBFormat
         {
             get
@@ -22,9 +24,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:AccessTokenFormat").Value;
+                    return _configuration.GetSection("AppSettings:AccessTokenFormat").Value;
 
                 }
                 catch (NullReferenceException)
@@ -43,9 +43,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:AccessTokenFormatV2").Value;
+                    return _configuration.GetSection("AppSettings:AccessTokenFormatV2").Value;
 
                 }
                 catch (NullReferenceException)

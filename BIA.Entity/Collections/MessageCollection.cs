@@ -296,8 +296,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    return configuration.GetSection("AppSettings:PWDSentToMobile").Value;
+                    return _configuration.GetSection("AppSettings:PWDSentToMobile").Value;
                 }
                 catch (NullReferenceException)
                 {
@@ -341,9 +340,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:UserNotFound").Value;
+                    return _configuration.GetSection("AppSettings:UserNotFound").Value;
 
                 }
                 catch (NullReferenceException)

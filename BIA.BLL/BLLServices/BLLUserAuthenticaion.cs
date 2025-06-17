@@ -17,9 +17,11 @@ namespace BIA.BLL.BLLServices
     public class BLLUserAuthenticaion
     {
         private readonly DALBiometricRepo _dataManager;
-        public BLLUserAuthenticaion(DALBiometricRepo dataManager)
+        private readonly IConfiguration _configuration;
+        public BLLUserAuthenticaion(DALBiometricRepo dataManager, IConfiguration configuration)
         {
             _dataManager = dataManager;
+            _configuration = configuration;
         }
         public async Task<int> GetUserAPIVersion(APIVersionRequest model)
         {
@@ -591,8 +593,7 @@ namespace BIA.BLL.BLLServices
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    isEligible = Convert.ToInt32(configuration.GetSection("AppSettings:IsEligibleAES").Value);
+                    isEligible = Convert.ToInt32(_configuration.GetSection("AppSettings:IsEligibleAES").Value);
                 }
                 catch (Exception)
                 {

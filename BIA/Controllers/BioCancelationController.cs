@@ -33,8 +33,9 @@ namespace BIA.Controllers
         private readonly BLLLog _bllLog;
         private readonly BaseController _bio;
         private readonly GeoFencingValidation _geo;
+        private readonly IConfiguration _configuration;
 
-        public BioCancelationController(BLLRAToDBSSParse raToDBssParse, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BLLCommon bllCommon, BL_Json blJson, BLLOrder bllOrder, ApiManager apiManager, BLLLog bllLog, BaseController bio, GeoFencingValidation geo)
+        public BioCancelationController(BLLRAToDBSSParse raToDBssParse, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BLLCommon bllCommon, BL_Json blJson, BLLOrder bllOrder, ApiManager apiManager, BLLLog bllLog, BaseController bio, GeoFencingValidation geo, IConfiguration configuration)
         {
             this._bllCommon = bllCommon;
             this._raToDBssParse = raToDBssParse;
@@ -46,6 +47,7 @@ namespace BIA.Controllers
             this._bllLog = bllLog;
             _bio = bio;
             _geo = geo;
+            this._configuration = configuration;
         }
 
         #region Bio-Cancel MSISDN validation  
@@ -941,9 +943,8 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

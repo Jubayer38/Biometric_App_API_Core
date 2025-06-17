@@ -2768,8 +2768,7 @@ namespace BIA.Controllers
                         }
                     }
 
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    string cherish_category_config = configuration.GetSection("AppSettings:cherish_categories").Value;
+                    string cherish_category_config = _configuration.GetSection("AppSettings:cherish_categories").Value;
                     string[] cofigValue;
                     if (cherish_category_config.Contains(","))
                     {

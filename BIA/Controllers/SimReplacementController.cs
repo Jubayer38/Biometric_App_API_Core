@@ -3111,10 +3111,8 @@ namespace BIA.Controllers
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

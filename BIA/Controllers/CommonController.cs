@@ -8566,11 +8566,9 @@ namespace BIA.Controllers
                 string stockIdByDefault = string.Empty;
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    channelIdFromConfig = configuration.GetSection("AppSettings:ChannelId").Value;
-                    stockIdFromConfig = configuration.GetSection("AppSettings:ChannelStockId").Value;
-                    stockIdByDefault = configuration.GetSection("AppSettings:ChannelStockIdDefault").Value;
+                    channelIdFromConfig = _configuration.GetSection("AppSettings:ChannelId").Value;
+                    stockIdFromConfig = _configuration.GetSection("AppSettings:ChannelStockId").Value;
+                    stockIdByDefault = _configuration.GetSection("AppSettings:ChannelStockIdDefault").Value;
                 }
                 catch { }
 
