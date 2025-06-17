@@ -71,9 +71,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:ValidAccessToken").Value;
+                    return _configuration.GetSection("AppSettings:ValidAccessToken").Value;
 
                 }
                 catch (NullReferenceException)
@@ -222,9 +220,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:InvalidUserName").Value;
+                    return _configuration.GetSection("AppSettings:InvalidUserName").Value;
 
                 }
                 catch (NullReferenceException)
@@ -244,9 +240,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:InvalidUserCridential").Value;
+                    return _configuration.GetSection("AppSettings:InvalidUserCridential").Value;
 
                 }
                 catch (NullReferenceException)
@@ -266,9 +260,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:UserValidted").Value;
+                    return _configuration.GetSection("AppSettings:UserValidted").Value;
 
                 }
                 catch (NullReferenceException)

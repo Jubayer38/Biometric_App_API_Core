@@ -2720,10 +2720,7 @@ namespace BIA.BLL.BLLServices
                     {
                         try
                         {
-                            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                            category_config = configuration.GetSection("AppSettings:number_category").Value;
-
+                            category_config = _configuration.GetSection("AppSettings:number_category").Value;
                         }
                         catch (Exception) { throw new Exception("Key not found in appsettings"); }
 
@@ -2829,9 +2826,7 @@ namespace BIA.BLL.BLLServices
                     {
                         try
                         {
-                            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                            category_config = configuration.GetSection("AppSettings:number_category").Value;
+                            category_config = _configuration.GetSection("AppSettings:number_category").Value;
 
                         }
                         catch (Exception) { throw new Exception("Key not found in appsettings"); }
@@ -2930,9 +2925,7 @@ namespace BIA.BLL.BLLServices
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    category_config = configuration.GetSection("AppSettings:number_category").Value;
+                    category_config = _configuration.GetSection("AppSettings:number_category").Value;
 
                 }
                 catch (Exception) { throw new Exception("Key not found in Web config"); }
@@ -3929,8 +3922,7 @@ namespace BIA.BLL.BLLServices
                 int totalData = dbssRespObj["data"].Count();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    dedicatedID = configuration.GetSection("AppSettings:dedicated_Ac_Id_TOS").Value;
+                    dedicatedID = _configuration.GetSection("AppSettings:dedicated_Ac_Id_TOS").Value;
                 }
                 catch (Exception) { throw new Exception("Data not found in web config."); }
 

@@ -16,10 +16,12 @@ namespace BIA.BLL.BLLServices
     public class OrderScheduler
     {
         private readonly OrderApiCall _orderApiCall;
+        private readonly IConfiguration _configuration;
 
-        public OrderScheduler(OrderApiCall orderApiCall)
+        public OrderScheduler(OrderApiCall orderApiCall, IConfiguration configuration)
         {
             _orderApiCall = orderApiCall;
+            _configuration = configuration;
         }
         public async Task BssServiceProcess(OrderDataModel item)
         {
@@ -29,9 +31,7 @@ namespace BIA.BLL.BLLServices
 
             try
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                CreateCustomerRetry = Convert.ToInt16(configuration.GetSection("AppSettings:CreateCustomerRetry").Value);
+                CreateCustomerRetry = Convert.ToInt16(_configuration.GetSection("AppSettings:CreateCustomerRetry").Value);
             }
             catch { }
 

@@ -285,9 +285,7 @@ namespace BIA.Controllers
                 int isEligible = 0;
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    isEligible = Convert.ToInt32(configuration.GetSection("AppSettings:IsEligibleAES").Value);
+                    isEligible = Convert.ToInt32(_configuration.GetSection("AppSettings:IsEligibleAES").Value);
                 }
                 catch { }
 
@@ -678,9 +676,7 @@ namespace BIA.Controllers
                 int isEligible = 0;
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    isEligible = Convert.ToInt32(configuration.GetSection("AppSettings:IsEligibleAES").Value);
+                    isEligible = Convert.ToInt32(_configuration.GetSection("AppSettings:IsEligibleAES").Value);
                 }
                 catch { }
 
@@ -1876,9 +1872,7 @@ namespace BIA.Controllers
                     int isEligible = 0;
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        isEligible = Convert.ToInt32(configuration.GetSection("AppSettings:IsEligibleAES").Value);
+                        isEligible = Convert.ToInt32(_configuration.GetSection("AppSettings:IsEligibleAES").Value);
                     }
                     catch { }
 

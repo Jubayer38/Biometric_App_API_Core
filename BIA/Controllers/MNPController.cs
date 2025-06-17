@@ -32,9 +32,10 @@ namespace BIA.Controllers
         private readonly BLLLog _bllLog;
         private readonly BaseController _bio;
         private readonly GeoFencingValidation _geo;
+        private readonly IConfiguration _configuration;
 
 
-        public MNPController(BLLRAToDBSSParse raToDBssParse, ApiManager apiManager, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLCommon bllCommon, BLLOrder bLLOrder, BLLLog bllLog, BaseController bio, GeoFencingValidation geo)
+        public MNPController(BLLRAToDBSSParse raToDBssParse, ApiManager apiManager, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLCommon bllCommon, BLLOrder bLLOrder, BLLLog bllLog, BaseController bio, GeoFencingValidation geo, IConfiguration configuration)
         {
             _bllCommon = bllCommon;
             _raToDBssParse = raToDBssParse;
@@ -46,6 +47,7 @@ namespace BIA.Controllers
             _bllLog = bllLog;
             _bio = bio;
             _geo = geo;
+            _configuration = configuration;
         }
 
         #region MNP Common
@@ -1163,9 +1165,8 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }
@@ -1758,9 +1759,8 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }
@@ -2565,9 +2565,8 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }
@@ -3281,9 +3280,8 @@ namespace BIA.Controllers
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

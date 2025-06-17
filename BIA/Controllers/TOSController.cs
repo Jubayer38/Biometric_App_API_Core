@@ -33,8 +33,9 @@ namespace BIA.Controllers
         private readonly GeoFencingValidation _geo;
         private readonly BLLDBSSToRAParse _dbssToRaParse;
         private readonly ApiManager _apiManager;
+        private readonly IConfiguration _configuration;
 
-        public TOSController(ApiRequest apiReq, BL_Json blJson, BLLOrder orderManager, BLLLog bllLog, BiometricApiCall apiCall, BaseController bio, GeoFencingValidation geo, BLLDBSSToRAParse dbssToRaParse, ApiManager apiManager)
+        public TOSController(ApiRequest apiReq, BL_Json blJson, BLLOrder orderManager, BLLLog bllLog, BiometricApiCall apiCall, BaseController bio, GeoFencingValidation geo, BLLDBSSToRAParse dbssToRaParse, ApiManager apiManager, IConfiguration configuration)
         {
             _apiReq = apiReq;
             _blJson = blJson;
@@ -45,6 +46,7 @@ namespace BIA.Controllers
             _geo = geo;
             _dbssToRaParse = dbssToRaParse;
             _apiManager = apiManager;
+            _configuration = configuration;
         }
 
         #region Individual TOS MSISDN validation NEW
@@ -1639,9 +1641,8 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

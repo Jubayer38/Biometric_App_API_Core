@@ -30,9 +30,10 @@ namespace BIA.Controllers
         private readonly BLLOrder _orderManager;
         private readonly BaseController _bio;  
         private readonly GeoFencingValidation _geo; 
-        private readonly BllHandleException _manageExecption;  
+        private readonly BllHandleException _manageExecption;
+        private readonly IConfiguration _configuration;
 
-        public SimCategoryMigrationController(BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLLog bllLog, ApiManager apiManager, BLLOrder orderManager, BaseController bio, GeoFencingValidation geo, BllHandleException manageExecption)
+        public SimCategoryMigrationController(BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLLog bllLog, ApiManager apiManager, BLLOrder orderManager, BaseController bio, GeoFencingValidation geo, BllHandleException manageExecption, IConfiguration configuration)
         {
             _dbssToRaParse = dbssToRaParse;
             _apiReq = apiReq;
@@ -43,6 +44,7 @@ namespace BIA.Controllers
             _bio = bio;
             _geo = geo;
             _manageExecption = manageExecption;
+            _configuration = configuration;
         }
 
         #region MSISDN validation NEW 
@@ -596,9 +598,8 @@ namespace BIA.Controllers
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

@@ -29,8 +29,9 @@ namespace BIA.Controllers
         private readonly BaseController _bio;
         private readonly ApiManager _apiManager;
         private readonly GeoFencingValidation _geo;
+        private readonly IConfiguration _configuration;
 
-        public POCController(BLLRAToDBSSParse raToDBssParse, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLOrder orderManager, BLLLog bllLog, BaseController bio, ApiManager apiManager, GeoFencingValidation geo)
+        public POCController(BLLRAToDBSSParse raToDBssParse, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLOrder orderManager, BLLLog bllLog, BaseController bio, ApiManager apiManager, GeoFencingValidation geo, IConfiguration configuration)
         {
             _raToDBssParse = raToDBssParse;
             _dbssToRaParse = dbssToRaParse;
@@ -41,6 +42,7 @@ namespace BIA.Controllers
             _bio = bio;
             _apiManager = apiManager;
             _geo = geo;
+            _configuration = configuration;
         }
 
         #region POC Send Order API
@@ -622,9 +624,8 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

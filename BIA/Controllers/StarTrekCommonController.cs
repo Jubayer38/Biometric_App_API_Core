@@ -3694,9 +3694,7 @@ namespace BIA.Controllers
                     {
                         try
                         {
-                            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                            category_config = configuration.GetSection("AppSettings:number_category").Value;
+                            category_config = _configuration.GetSection("AppSettings:number_category").Value;
 
                         }
                         catch (Exception) { throw new Exception("Key not found in appsettings"); }

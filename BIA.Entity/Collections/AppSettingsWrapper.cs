@@ -4,6 +4,8 @@ namespace BIA.Entity.Collections
 {
     public class AppSettingsWrapper
     {
+        private static readonly IConfigurationRoot _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+
         public static string ApiBaseUrl
         {
             get
@@ -21,9 +23,7 @@ namespace BIA.Entity.Collections
         {
             get
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                return Convert.ToInt32(configuration.GetSection("AppSettings:cyn_cherished_filter_allow").Value);
+                return Convert.ToInt32(_configuration.GetSection("AppSettings:cyn_cherished_filter_allow").Value);
             }
         }
 
@@ -31,9 +31,7 @@ namespace BIA.Entity.Collections
         {
             get
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                return configuration.GetSection("AppSettings:BLOTPApiBaseUrl").Value;
+                return _configuration.GetSection("AppSettings:BLOTPApiBaseUrl").Value;
 
             }
         }
@@ -42,9 +40,7 @@ namespace BIA.Entity.Collections
         {
             get
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                return configuration.GetSection("AppSettings:dmsBaseUrl").Value;
+                return _configuration.GetSection("AppSettings:dmsBaseUrl").Value;
 
             }
         }
@@ -53,9 +49,7 @@ namespace BIA.Entity.Collections
         {
             get
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                return configuration.GetSection("AppSettings:RetilerBaseAPI").Value;
+                return _configuration.GetSection("AppSettings:RetilerBaseAPI").Value;
 
             }
         }
@@ -64,9 +58,7 @@ namespace BIA.Entity.Collections
         {
             get
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                return configuration.GetSection("AppSettings:RSOBaseAPI").Value;
+                return _configuration.GetSection("AppSettings:RSOBaseAPI").Value;
 
             }
         }
@@ -74,9 +66,7 @@ namespace BIA.Entity.Collections
         {
             get
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                return configuration.GetSection("AppSettings:sigleSourceAPI").Value;
+                return _configuration.GetSection("AppSettings:singleSourceAPI").Value;
 
             }
         }

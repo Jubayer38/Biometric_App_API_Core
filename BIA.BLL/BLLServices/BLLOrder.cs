@@ -22,13 +22,15 @@ namespace BIA.BLL.BLLServices
         private readonly LogWriter _logWriter;
         private readonly DALBiometricRepo dataManager;
         private readonly BLLCommon _bllCommon;
-        private readonly BLLLog _bLLLog; 
-        public BLLOrder(LogWriter logWriter, DALBiometricRepo _dataManager, BLLCommon bllCommon, BLLLog bLLLog)
+        private readonly BLLLog _bLLLog;
+        private readonly IConfiguration _configuration;
+        public BLLOrder(LogWriter logWriter, DALBiometricRepo _dataManager, BLLCommon bllCommon, BLLLog bLLLog, IConfiguration configuration)
         {
             _logWriter = logWriter;
             dataManager = _dataManager;
             _bllCommon = bllCommon;
             _bLLLog = bLLLog;
+            _configuration = configuration;
         }
         // return type SendOrderResponse of this methos
         public async Task<SendOrderResponse> SubmitOrder3(RAOrderRequest model)// Converted FP in byte[].
@@ -527,9 +529,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -1139,9 +1139,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -2117,9 +2115,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -2450,9 +2446,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -3296,9 +3290,7 @@ namespace BIA.BLL.BLLServices
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    basePath = configuration.GetSection("AppSettings:FingerpritnFilePath").Value;
+                    basePath = _configuration.GetSection("AppSettings:FingerpritnFilePath").Value;
 
                 }
                 catch (Exception) { throw new Exception("Key not found in appsettings"); }

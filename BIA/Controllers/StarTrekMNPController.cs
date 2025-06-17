@@ -29,14 +29,16 @@ namespace BIA.Controllers
         private readonly BaseController _bio;
         private readonly GeoFencingValidation _geo;
         private readonly BLLDBSSToRAParse _dbssToRaParse;
+        private readonly IConfiguration _configuration;
 
-        public StarTrekMNPController(BLLOrder orderManager, BLLLog bllLog, BaseController bio, GeoFencingValidation geo, BLLDBSSToRAParse dbssToRaParse)
+        public StarTrekMNPController(BLLOrder orderManager, BLLLog bllLog, BaseController bio, GeoFencingValidation geo, BLLDBSSToRAParse dbssToRaParse, IConfiguration configuration)
         {
             _orderManager = orderManager;
             _bllLog = bllLog;
             _bio = bio;
             _geo = geo;
             _dbssToRaParse = dbssToRaParse;
+            _configuration = configuration;
         }
 
         /// Send Order
@@ -425,9 +427,8 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }
