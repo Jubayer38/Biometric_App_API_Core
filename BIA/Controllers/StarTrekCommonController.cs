@@ -30,14 +30,16 @@ namespace BIA.Controllers
         private readonly BLLDBSSToRAParse _dbssToRaParse;
         private readonly BLLLog _bllLog;
         private readonly BLLCommon _bllCommon;
+        private readonly IConfiguration _configuration;
 
-        public StarTrekCommonController(BaseController bio, eShopAPICall eShopAPI, BLLDBSSToRAParse dbssToRaParse, BLLLog bllLog, BLLCommon bllCommon)
+        public StarTrekCommonController(BaseController bio, eShopAPICall eShopAPI, BLLDBSSToRAParse dbssToRaParse, BLLLog bllLog, BLLCommon bllCommon, IConfiguration configuration)
         {
             _bio = bio;
             _eShopAPI = eShopAPI;
             _dbssToRaParse = dbssToRaParse;
             _bllLog = bllLog;
             _bllCommon = bllCommon;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -3802,9 +3804,7 @@ namespace BIA.Controllers
                     {
                         try
                         {
-                            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                            category_config = configuration.GetSection("AppSettings:number_category").Value;
+                            category_config = _configuration.GetSection("AppSettings:number_category").Value;
 
                         }
                         catch (Exception) { throw new Exception("Key not found in appsettings"); }

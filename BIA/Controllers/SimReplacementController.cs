@@ -33,10 +33,11 @@ namespace BIA.Controllers
         private readonly BLLOrder _orderManager;
         private readonly GeoFencingValidation _geo;
         private readonly BLLSIMReplacement _simReplacementManager; 
-        private readonly BLLLog _bllLog;  
+        private readonly BLLLog _bllLog;
+        private readonly IConfiguration _configuration;
 
-         
-        public SimReplacementController(BLLRAToDBSSParse raToDBssParse, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLCommon bllCommon, BaseController bio, ApiManager apiManager, BLLOrder orderManager, GeoFencingValidation geo, BLLSIMReplacement simReplacementManager, BLLLog bllLog)
+
+        public SimReplacementController(BLLRAToDBSSParse raToDBssParse, BLLDBSSToRAParse dbssToRaParse, ApiRequest apiReq, BL_Json blJson, BLLCommon bllCommon, BaseController bio, ApiManager apiManager, BLLOrder orderManager, GeoFencingValidation geo, BLLSIMReplacement simReplacementManager, BLLLog bllLog, IConfiguration configuration)
         {
             _raToDBssParse = raToDBssParse;
             _dbssToRaParse = dbssToRaParse;
@@ -49,6 +50,7 @@ namespace BIA.Controllers
             _geo = geo;
             _simReplacementManager = simReplacementManager;
             _bllLog = bllLog;
+            _configuration = configuration;
         }
 
         #region Get SIM Replacement Reasons
@@ -2564,9 +2566,8 @@ namespace BIA.Controllers
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

@@ -1964,9 +1964,7 @@ namespace BIA.Controllers
                     int isEligible = 0;
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        isEligible = Convert.ToInt32(configuration.GetSection("AppSettings:IsEligibleAES").Value);
+                        isEligible = Convert.ToInt32(_configuration.GetSection("AppSettings:IsEligibleAES").Value);
                     }
                     catch { }
 
@@ -2096,34 +2094,58 @@ namespace BIA.Controllers
 
         private string GetEncriptedSecurityTokenV2(string loginProvider, string userId, string userName, string distributorCode, object? deviceId)
         {
-            string encryptedToken;
-
             try
             {
-                string formatted = string.Format(
-                    StringFormatCollection.AccessTokenFormatV2,
-                    loginProvider,
-                    userId,
-                    userName,
-                    distributorCode,
-                    deviceId,
-                    Guid.NewGuid());
+                // Step 1: Validate all inputs
+                if (string.IsNullOrEmpty(loginProvider))
+                    throw new ArgumentNullException(nameof(loginProvider), "Login provider cannot be null or empty.");
+                if (string.IsNullOrEmpty(userId))
+                    throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+                if (string.IsNullOrEmpty(userName))
+                    throw new ArgumentNullException(nameof(userName), "User name cannot be null or empty.");
+                if (string.IsNullOrEmpty(distributorCode))
+                    throw new ArgumentNullException(nameof(distributorCode), "Distributor code cannot be null or empty.");
 
-                var encrypted = AESCryptography.Encrypt(formatted);
+                // Step 2: Validate format string
+                string formatString = StringFormatCollection.AccessTokenFormatV2;
+                if (string.IsNullOrEmpty(formatString))
+                    throw new InvalidOperationException("AccessTokenFormatV2 is not configured in appsettings.json.");
 
-                if (encrypted == null)
+                // Step 3: Safely handle deviceId
+                string deviceIdValue = deviceId?.ToString() ?? string.Empty;
+
+                // Step 4: Prepare arguments for String.Format
+                object[] formatArgs = new object[] { loginProvider, userId, userName, distributorCode, deviceIdValue, Guid.NewGuid() };
+
+                // Step 5: Perform string formatting
+                string formattedToken;
+                try
                 {
-                    throw new InvalidOperationException("Encryption returned null.");
+                    formattedToken = String.Format(formatString, formatArgs);
+                }
+                catch (FormatException ex)
+                {
+                    throw new InvalidOperationException($"String formatting failed with format: {formatString}", ex);
                 }
 
-                encryptedToken = encrypted;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                // Step 6: Validate formatted string
+                if (string.IsNullOrEmpty(formattedToken))
+                    throw new InvalidOperationException("Formatted token string is null or empty.");
 
-            return encryptedToken;
+                // Step 7: Perform encryption
+                string encryptedToken = AESCryptography.Encrypt(formattedToken);
+                if (string.IsNullOrEmpty(encryptedToken))
+                    throw new InvalidOperationException("Encryption resulted in a null or empty string.");
+
+                return encryptedToken;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to generate encrypted security token. Format: {StringFormatCollection.AccessTokenFormatV2}, " +
+                    $"loginProvider: {loginProvider}, userId: {userId}, userName: {userName}, distributorCode: {distributorCode}, deviceId: {deviceId}",
+                    ex);
+            }
         }
 
         /// <summary>

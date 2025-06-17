@@ -29,17 +29,19 @@ namespace BIA.Controllers
         private readonly BaseController _bio;
         private readonly GeoFencingValidation _geo;
         private readonly StarTrekCommonController _trekCommonController;
+        private readonly IConfiguration _configuration;
 
-        public StartTrekCherishNewConnection(ApiRequest apiReq, BL_Json blJson, BLLOrder orderManager, BLLLog bllLog, BiometricApiCall apiCall, BaseController bio, GeoFencingValidation geo, StarTrekCommonController trekCommonController)
+        public StartTrekCherishNewConnection(ApiRequest apiReq, BL_Json blJson, BLLOrder orderManager, BLLLog bllLog, BiometricApiCall apiCall, BaseController bio, GeoFencingValidation geo, StarTrekCommonController trekCommonController, IConfiguration configuration)
         {  
             _apiReq = apiReq;
             _blJson = blJson;
-            _orderManager=orderManager;
+            _orderManager = orderManager;
             _bllLog = bllLog;
             _apiCall = apiCall;
             _bio = bio;
             _geo = geo;
             _trekCommonController = trekCommonController;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -68,9 +70,8 @@ namespace BIA.Controllers
 
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                    geoFencEnable = Convert.ToInt32(configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
+                    allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                    geoFencEnable = Convert.ToInt32(_configuration.GetSection("AppSettings:GeofencingDistanceCalculateEnable").Value);
                 }
                 catch
                 { }

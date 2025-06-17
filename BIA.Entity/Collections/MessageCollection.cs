@@ -9,6 +9,8 @@ namespace BIA.Entity.Collections
 {
     public static class MessageCollection
     {
+        private static readonly IConfigurationRoot _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+
         public static string Success
         {
             get
@@ -48,9 +50,7 @@ namespace BIA.Entity.Collections
             {
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    return configuration.GetSection("AppSettings:InvalidSecurityToken").Value;
+                    return _configuration.GetSection("AppSettings:InvalidSecurityToken").Value;
                    
                 }
                 catch (NullReferenceException)

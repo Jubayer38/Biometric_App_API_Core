@@ -38,8 +38,9 @@ namespace BIA.Controllers
         private readonly BaseController _bio;
         private readonly BLLDivDisThana _divDisThana;
         private readonly BLLUserAuthenticaion _bLLUserAuthenticaion;
+        private readonly IConfiguration _configuration;
 
-        public CommonController(DALBiometricRepo dataManager, BLLDBSSToRAParse dbssToRaParse, BLLRAToDBSSParse raToDBssParse, ApiRequest apiReq, BL_Json blJson, BLLCommon bllCommon, BLLOrder bllOrder, ApiManager apiManager, BLLLog bllLog, BaseController bio, BLLDivDisThana divDisThana, BLLUserAuthenticaion bLLUserAuthenticaion)
+        public CommonController(DALBiometricRepo dataManager, BLLDBSSToRAParse dbssToRaParse, BLLRAToDBSSParse raToDBssParse, ApiRequest apiReq, BL_Json blJson, BLLCommon bllCommon, BLLOrder bllOrder, ApiManager apiManager, BLLLog bllLog, BaseController bio, BLLDivDisThana divDisThana, BLLUserAuthenticaion bLLUserAuthenticaion, IConfiguration configuration)
         { 
             this._bllCommon = bllCommon;
             this._raToDBssParse = raToDBssParse;
@@ -53,6 +54,7 @@ namespace BIA.Controllers
             this._bio = bio;
             this._divDisThana = divDisThana;
             this._bLLUserAuthenticaion = bLLUserAuthenticaion;
+            _configuration = configuration;
         }
 
         #region Get Subscription Type
@@ -8126,11 +8128,9 @@ namespace BIA.Controllers
                 string stockIdByDefault = string.Empty;
                 try
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    channelIdFromConfig = configuration.GetSection("AppSettings:ChannelId").Value;
-                    stockIdFromConfig = configuration.GetSection("AppSettings:ChannelStockId").Value;
-                    stockIdByDefault = configuration.GetSection("AppSettings:ChannelStockIdDefault").Value;
+                    channelIdFromConfig = _configuration.GetSection("AppSettings:ChannelId").Value;
+                    stockIdFromConfig = _configuration.GetSection("AppSettings:ChannelStockId").Value;
+                    stockIdByDefault = _configuration.GetSection("AppSettings:ChannelStockIdDefault").Value;
                 }
                 catch { }
 

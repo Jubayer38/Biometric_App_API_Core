@@ -16,12 +16,14 @@ namespace BIA.BLL.BLLServices
         private readonly DALBiometricRepo _dataManager;
         private readonly BLLCommon _bllCommon;
         private readonly BLLDivDisThana _bLLDivDisThana;
+        private readonly IConfiguration _configuration;
 
-        public BLLDBSSToRAParse(DALBiometricRepo dataManager, BLLCommon bllCommon, BLLDivDisThana bLLDivDisThana)
+        public BLLDBSSToRAParse(DALBiometricRepo dataManager, BLLCommon bllCommon, BLLDivDisThana bLLDivDisThana, IConfiguration configuration)
         {
             _dataManager = dataManager;
             _bllCommon = bllCommon;
             _bLLDivDisThana = bLLDivDisThana;
+            _configuration = configuration;
         }
         public RACommonResponse QCUpdateRespParsing(QCStatusResponseRootobject data)
         {
