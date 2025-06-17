@@ -13,11 +13,13 @@ namespace BIA.Common
     {
         private readonly BLLGeofencing _bLLGeofencing;
         private readonly BLLLog _bllLog;
+        private readonly IConfiguration _configuration;
 
-        public GeoFencingValidation(BLLGeofencing bLLGeofencing, BLLLog bllLog)
+        public GeoFencingValidation(BLLGeofencing bLLGeofencing, BLLLog bllLog, IConfiguration configuration)
         {
             _bLLGeofencing = bLLGeofencing;
             _bllLog = bllLog;
+            _configuration = configuration;
         }
         public async Task<RACommonResponseRevamp> GeoFencingBPUser(RAOrderRequestV2 model)
         {
@@ -35,11 +37,10 @@ namespace BIA.Common
             string CrossesTheArea = string.Empty;
             try
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                allowedDistance = Convert.ToDouble(configuration.GetSection("AppSettings:GeofencingDistance").Value);
-                BPDeviceLatLonNotFound = configuration.GetSection("AppSettings:BP_DeviceLatlonNot_Found").Value;
-                RetLatLonNotFound = configuration.GetSection("AppSettings:RetLatLonNotFound").Value;
-                CrossesTheArea = configuration.GetSection("AppSettings:CrossesTheArea").Value;
+                allowedDistance = Convert.ToDouble(_configuration.GetSection("AppSettings:GeofencingDistance").Value);
+                BPDeviceLatLonNotFound = _configuration.GetSection("AppSettings:BP_DeviceLatlonNot_Found").Value;
+                RetLatLonNotFound = _configuration.GetSection("AppSettings:RetLatLonNotFound").Value;
+                CrossesTheArea = _configuration.GetSection("AppSettings:CrossesTheArea").Value;
             }
             catch
             { }

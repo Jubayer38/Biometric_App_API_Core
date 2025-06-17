@@ -27,9 +27,10 @@ namespace BIA.Controllers
         private readonly BLLFTRRestriction _bLLFTR;
         private readonly FTR_Restrict _ftr_restrict;
         private readonly BL_Json _blJson;
-        private readonly BLLCommon _bLLCommon; 
+        private readonly BLLCommon _bLLCommon;
+        private readonly IConfiguration _configuration;
 
-        public FirstRechargeController(BLLFirstRecharge frManager, BaseController bio, BLLLog bllLog, BLLFTRRestriction bLLFTR, FTR_Restrict ftr_restrict, BL_Json blJson, BLLCommon bLLCommon)
+        public FirstRechargeController(BLLFirstRecharge frManager, BaseController bio, BLLLog bllLog, BLLFTRRestriction bLLFTR, FTR_Restrict ftr_restrict, BL_Json blJson, BLLCommon bLLCommon, IConfiguration configuration)
         {
             _frManager = frManager;
             _bio = bio;
@@ -38,6 +39,7 @@ namespace BIA.Controllers
             _ftr_restrict = ftr_restrict;
             _blJson = blJson;
             _bLLCommon = bLLCommon;
+            _configuration = configuration;
         }         
 
         [HttpPost]
@@ -61,7 +63,6 @@ namespace BIA.Controllers
             int restrictAllowFTR = 1;
             try
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
                 string loginProviderId = string.Empty;
                 string loginProviderIdRet = string.Empty;
                 int addMinutes = 0;
@@ -73,9 +74,9 @@ namespace BIA.Controllers
                 secreteKey = SettingsValues.GetJWTSequrityKey();
                 try
                 {
-                    loginProviderIdRet = configuration.GetSection("AppSettings:JWETLoginProvider").Value;
-                    addMinutes = Convert.ToInt32(configuration.GetSection("AppSettings:addMinutesForJWET").Value);
-                    substractMinutes = Convert.ToInt32(configuration.GetSection("AppSettings:substarctMinutesForJWET").Value);
+                    loginProviderIdRet = _configuration.GetSection("AppSettings:JWETLoginProvider").Value;
+                    addMinutes = Convert.ToInt32(_configuration.GetSection("AppSettings:addMinutesForJWET").Value);
+                    substractMinutes = Convert.ToInt32(_configuration.GetSection("AppSettings:substarctMinutesForJWET").Value);
                 }
                 catch
                 { }
@@ -109,7 +110,7 @@ namespace BIA.Controllers
                 double balance = 0;
                 int isFtrFeatureOn = 0;
                 
-                isFtrFeatureOn = Convert.ToInt32(configuration.GetSection("AppSettings:isFtrFeatureOn").Value);
+                isFtrFeatureOn = Convert.ToInt32(_configuration.GetSection("AppSettings:isFtrFeatureOn").Value);
 
                 if (isFtrFeatureOn == 1)
                 {

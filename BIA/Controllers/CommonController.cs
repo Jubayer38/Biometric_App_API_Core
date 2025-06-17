@@ -6745,8 +6745,8 @@ namespace BIA.Controllers
                 }
                 else
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    cherish_category_config = configuration.GetSection("AppSettings:cherish_categories").Value;
+                    cherish_category_config = _configuration.GetSection("AppSettings:cherish_categories").Value;
+
                     if (category_config.Contains(","))
                     {
                         cofigValue = cherish_category_config.Split(',');
@@ -8745,13 +8745,11 @@ namespace BIA.Controllers
 
                     secreteKey = SettingsValues.GetJWTSequrityKey();
 
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    product_code_prepaid = configuration.GetSection("AppSettings:product_code_prepaid").Value;
-                    product_code_postpaid = configuration.GetSection("AppSettings:product_code_Postpaid").Value;
-                    product_category_prepaid = configuration.GetSection("AppSettings:product_category_prepaid").Value;
-                    product_category_postpaid = configuration.GetSection("AppSettings:product_category_postpaid").Value;
-                    product_category_simReplacment = configuration.GetSection("AppSettings:product_category_simReplacment").Value;
+                    product_code_prepaid = _configuration.GetSection("AppSettings:product_code_prepaid").Value;
+                    product_code_postpaid = _configuration.GetSection("AppSettings:product_code_Postpaid").Value;
+                    product_category_prepaid = _configuration.GetSection("AppSettings:product_category_prepaid").Value;
+                    product_category_postpaid = _configuration.GetSection("AppSettings:product_category_postpaid").Value;
+                    product_category_simReplacment = _configuration.GetSection("AppSettings:product_category_simReplacment").Value;
 
                     try
                     {
@@ -8937,36 +8935,35 @@ namespace BIA.Controllers
                     string secreteKey = string.Empty;
                     string loginProviderId = string.Empty;
                     secreteKey = SettingsValues.GetJWTSequrityKey();
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                    try { product_code_prepaid = configuration.GetSection("AppSettings:product_code_prepaid").Value; }
+                    
+                    try { product_code_prepaid = _configuration.GetSection("AppSettings:product_code_prepaid").Value; }
                     catch (Exception) { throw new Exception("product_code_prepaid is not found in appsettings.json"); }
 
-                    try { product_code_postpaid = configuration.GetSection("AppSettings:product_code_Postpaid").Value; }
+                    try { product_code_postpaid = _configuration.GetSection("AppSettings:product_code_Postpaid").Value; }
                     catch (Exception) { throw new Exception("product_code_Postpaid is not found in appsettings.json"); }
 
-                    try { product_category_prepaid = configuration.GetSection("AppSettings:product_category_prepaid").Value; }
+                    try { product_category_prepaid = _configuration.GetSection("AppSettings:product_category_prepaid").Value; }
                     catch (Exception) { throw new Exception("product_category_prepaid is not found in appsettings.json"); }
 
-                    try { product_category_postpaid = configuration.GetSection("AppSettings:product_category_postpaid").Value; }
+                    try { product_category_postpaid = _configuration.GetSection("AppSettings:product_category_postpaid").Value; }
                     catch (Exception) { throw new Exception("product_category_postpaid is not found in appsettings.json"); }
 
-                    try { product_category_simReplacment = configuration.GetSection("AppSettings:product_category_simReplacment").Value; }
+                    try { product_category_simReplacment = _configuration.GetSection("AppSettings:product_category_simReplacment").Value; }
                     catch (Exception) { throw new Exception("product_category_simReplacment is not found in appsettings.json"); }
 
-                    try { product_code_simReplacment = configuration.GetSection("AppSettings:product_code_simReplacment").Value; }
+                    try { product_code_simReplacment = _configuration.GetSection("AppSettings:product_code_simReplacment").Value; }
                     catch (Exception) { throw new Exception("product_code_simReplacment is not found in appsettings.json"); }
 
-                    try { product_code_StarTrekPrepaid = configuration.GetSection("AppSettings:p_code_starTrek_prepaid").Value; }
+                    try { product_code_StarTrekPrepaid = _configuration.GetSection("AppSettings:p_code_starTrek_prepaid").Value; }
                     catch (Exception) { throw new Exception("p_code_starTrek_prepaid is not found in appsettings.json"); }
 
-                    try { product_code_StarTrekPrepaid_esim = configuration.GetSection("AppSettings:p_code_starTrek_prepaid_esim").Value; }
+                    try { product_code_StarTrekPrepaid_esim = _configuration.GetSection("AppSettings:p_code_starTrek_prepaid_esim").Value; }
                     catch (Exception) { throw new Exception("p_code_starTrek_prepaid_esim is not found in appsettings.json"); }
 
-                    try { product_category_StarTrekPrepaid = configuration.GetSection("AppSettings:product_category_StarTrekPrepaid").Value; }
+                    try { product_category_StarTrekPrepaid = _configuration.GetSection("AppSettings:product_category_StarTrekPrepaid").Value; }
                     catch (Exception) { throw new Exception("product_category_StarTrekPrepaid is not found in appsettings.json"); }
 
-                    try { product_category_StarTrekPrepaid_esim = configuration.GetSection("AppSettings:product_category_StarTrekPrepaid_esim").Value; }
+                    try { product_category_StarTrekPrepaid_esim = _configuration.GetSection("AppSettings:product_category_StarTrekPrepaid_esim").Value; }
                     catch (Exception) { throw new Exception("product_category_StarTrekPrepaid_esim is not found in appsettings.json"); }
 
                     ValidTokenResponse security = new ValidTokenResponse();

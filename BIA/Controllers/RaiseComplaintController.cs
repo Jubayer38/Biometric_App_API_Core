@@ -17,11 +17,14 @@ namespace BIA.Controllers
         private readonly BLLRaiseComplaint _complaintManager;
         private readonly BaseController _bio;
         private readonly BLLLog _bllLog;
-        public RaiseComplaintController(BLLRaiseComplaint complaintManager, BaseController bio, BLLLog bllLog)
+        private readonly IConfiguration _configuration;
+
+        public RaiseComplaintController(BLLRaiseComplaint complaintManager, BaseController bio, BLLLog bllLog, IConfiguration configuration)
         {
             _complaintManager = complaintManager;
             _bio = bio;
             _bllLog = bllLog;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -38,7 +41,6 @@ namespace BIA.Controllers
             string responseContent = String.Empty;
             ErrorDescription error = new ErrorDescription();
             ComplaintResponseModel complaintResponse = new ComplaintResponseModel();
-            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
             try
             {
                 SubmitComplaintModel model = new SubmitComplaintModel
@@ -47,12 +49,12 @@ namespace BIA.Controllers
                     retailerCode = reqModel.retailerCode,
                     description = reqModel.description,
                     userName = SettingsValues.GetRSOAppUserName(),
-                    password = configuration.GetSection("AppSettings:rso_app_pas").Value,
-                    complaintType = configuration.GetSection("AppSettings:complaint_type").Value,
-                    complaintTitle = configuration.GetSection("AppSettings:complaint_title").Value,
-                    preferredLevel = configuration.GetSection("AppSettings:preferred_level").Value,
-                    preferredLevelName = configuration.GetSection("AppSettings:preferred_level_name").Value,
-                    preferredLevelContact = configuration.GetSection("AppSettings:preferrred_level_contact").Value
+                    password = _configuration.GetSection("AppSettings:rso_app_pas").Value,
+                    complaintType = _configuration.GetSection("AppSettings:complaint_type").Value,
+                    complaintTitle = _configuration.GetSection("AppSettings:complaint_title").Value,
+                    preferredLevel = _configuration.GetSection("AppSettings:preferred_level").Value,
+                    preferredLevelName = _configuration.GetSection("AppSettings:preferred_level_name").Value,
+                    preferredLevelContact = _configuration.GetSection("AppSettings:preferrred_level_contact").Value
                 };
 
                 #region Insert_Complaint_In_DB

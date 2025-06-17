@@ -2645,8 +2645,8 @@ namespace BIA.BLL.BLLServices
                 }
                 if (status == "available")
                 {
-                    IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-                    cherish_category_config = configuration.GetSection("AppSettings:cherish_categories").Value;
+                    cherish_category_config = _configuration.GetSection("AppSettings:cherish_categories").Value;
+
                     if (cherish_category_config.Contains(","))
                     {
                         cofigValue = cherish_category_config.Split(',');

@@ -38,7 +38,6 @@ namespace BIA.Common
             _apiReq = apiReq;
         }
 
-        readonly IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
         public static string singleSourceLoginSessionToken = null;
         public async Task<BioVerifyResp> BioVerificationReqToBss(BiomerticDataModel item, object reqModel, string meathodUrl)
         {

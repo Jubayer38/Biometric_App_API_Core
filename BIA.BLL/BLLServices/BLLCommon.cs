@@ -26,11 +26,13 @@ namespace BIA.BLL.BLLServices
     {
         private readonly DALBiometricRepo dataManager;
         private readonly BLLUserAuthenticaion _bLLUserAuthenticaion;
+        private readonly IConfiguration _configuration;
 
-        public BLLCommon(DALBiometricRepo _dataManager, BLLUserAuthenticaion bLLUserAuthenticaion)
+        public BLLCommon(DALBiometricRepo _dataManager, BLLUserAuthenticaion bLLUserAuthenticaion, IConfiguration configuration)
         {
             dataManager = _dataManager;
             _bLLUserAuthenticaion = bLLUserAuthenticaion;
+            _configuration = configuration;
         }
         public async Task<bool> IsStockAvailable(int stock_id, int channel_id)
         {
@@ -198,9 +200,8 @@ namespace BIA.BLL.BLLServices
         public async Task<ActivityLogResponseRevamp> GetActivityLogDataV3(int activity_type_id, string user_id)
         {
             ActivityLogResponseRevamp response = new ActivityLogResponseRevamp();
-            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
             int isFtrFeatureOn = 0;
-            isFtrFeatureOn = Convert.ToInt32(configuration.GetSection("AppSettings:isFtrFeatureOn").Value);
+            isFtrFeatureOn = Convert.ToInt32(_configuration.GetSection("AppSettings:isFtrFeatureOn").Value);
             try
             {
                 var dataRow = await dataManager.GetActivityLogDataV3(activity_type_id, user_id);
@@ -418,9 +419,7 @@ namespace BIA.BLL.BLLServices
             string distCode = string.Empty;            
             try
             {
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                int isEligible  = Convert.ToInt32(configuration.GetSection("AppSettings:IsEligibleAES").Value);
+                int isEligible  = Convert.ToInt32(_configuration.GetSection("AppSettings:IsEligibleAES").Value);
 
 
                 if (isEligible == 1)
@@ -1269,9 +1268,8 @@ namespace BIA.BLL.BLLServices
         public async Task<CherishCategoryListResModel> GetCherishCategoyListData(string channelName)
         {
             CherishCategoryListResModel response = new CherishCategoryListResModel();
-            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
             string defaultCategory = string.Empty;
-            defaultCategory = configuration.GetSection("AppSettings:default_category").Value;
+            defaultCategory = _configuration.GetSection("AppSettings:default_category").Value;
             response.default_category=defaultCategory;
             try
             {

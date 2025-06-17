@@ -21,11 +21,13 @@ namespace BIA.DAL.Repositories
     {
         private readonly LogWriter _logWriter;
         private readonly OracleDataManagerV2 _oracleDataManagerV2;
+        private readonly IConfiguration _configuration;
 
-        public DALBiometricRepo(LogWriter logWriter, OracleDataManagerV2 oracleDataManagerV2)
+        public DALBiometricRepo(LogWriter logWriter, OracleDataManagerV2 oracleDataManagerV2, IConfiguration configuration)
         {
             _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
             _oracleDataManagerV2 = oracleDataManagerV2;
+            _configuration = configuration;
         }
         #region ===================| Reservation Part |==================
         public async Task<bool> UpdateBioDbForReservation(string bi_token_no, string msisdn_reservation_id)
@@ -257,11 +259,7 @@ namespace BIA.DAL.Repositories
 
         public async Task<DataTable> GetActivityLogDataV3(int activity_type_id, string user_id)
         {
-            IConfiguration configuration = new ConfigurationBuilder()
-                                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                                            .Build();
-
-            int isFtrFeatureOn = Convert.ToInt32(configuration.GetSection("AppSettings:isFtrFeatureOn").Value);
+            int isFtrFeatureOn = Convert.ToInt32(_configuration.GetSection("AppSettings:isFtrFeatureOn").Value);
 
             DataTable result = null;
             try
