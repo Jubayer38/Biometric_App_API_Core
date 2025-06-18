@@ -212,9 +212,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -500,9 +498,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -806,9 +802,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -1108,9 +1102,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -1414,9 +1406,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -1747,9 +1737,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -2080,9 +2068,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -2411,9 +2397,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                     }
                     catch (NullReferenceException)
@@ -2739,9 +2723,7 @@ namespace BIA.BLL.BLLServices
                     //If src customer is validated by OTP, then we keep a note in DB column.
                     try
                     {
-                        IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                        order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                        order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
                     }
                     catch (NullReferenceException)
                     {
@@ -2979,9 +2961,7 @@ namespace BIA.BLL.BLLServices
                     {
                         try
                         {
-                            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
-
-                            order.note = configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
+                            order.note = _configuration.GetSection("AppSettings:B2BtoB2CTwoPaertyValidationOTPNote").Value;
 
                         }
                         catch (Exception) { throw new Exception("Key not found in appsettings"); }
