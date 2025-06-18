@@ -1385,7 +1385,7 @@ namespace BIA.BLL.BLLServices
             string amount = string.Empty;
             try
             {
-                var dataRow = await dataManager.GetCategoryMinAmount(category);
+                var dataRow = await dataManager.GetCategoryMinAmount(category);  
 
                 if (dataRow.Rows.Count > 0)
                 {
