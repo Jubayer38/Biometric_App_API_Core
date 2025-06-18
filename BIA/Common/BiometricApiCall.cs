@@ -1110,7 +1110,6 @@ namespace BIA.Common
 
         public async Task<string> SingleSourceLogin(string msisdn, string userName)
         {
-            HttpClient client = new HttpClient();
             LogModel log = new LogModel();
             SingleSourceReqModel singleSourceReqModel = new SingleSourceReqModel();
             SingleSourceLoginReq loginReqModel = new SingleSourceLoginReq();
@@ -1146,8 +1145,11 @@ namespace BIA.Common
 
                 content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = client.PostAsync(loginapiUrl, content).Result;
-                loginResponseContent = response.Content.ReadAsStringAsync().Result;
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = client.PostAsync(loginapiUrl, content).Result;
+                    loginResponseContent = response.Content.ReadAsStringAsync().Result;
+                }
 
                 loginapiResponse = JsonConvert.DeserializeObject<SingleSourceLoginRes>(loginResponseContent);
 
