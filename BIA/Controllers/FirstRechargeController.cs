@@ -46,7 +46,6 @@ namespace BIA.Controllers
         [Route("SubmitFirstRecharge")]
         public async Task<IActionResult> SubmitFirstRecharge([FromBody] RechargeRequestModel model)
         {
-            HttpClient client = new HttpClient();
             string apiUrl = RetailerAPI.RechargeAPI;
             ErrorDescription error = new ErrorDescription();
             RechargeResponseModel? apiResponse = new RechargeResponseModel();
@@ -179,9 +178,12 @@ namespace BIA.Controllers
 
                                 StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                                HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
+                                using (HttpClient client = new HttpClient())
+                                {
+                                    HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
 
-                                responseContent = response.Content.ReadAsStringAsync().Result;
+                                    responseContent = response.Content.ReadAsStringAsync().Result;
+                                }
 
                                 apiResponse = JsonConvert.DeserializeObject<RechargeResponseModel>(responseContent);
 
@@ -193,9 +195,12 @@ namespace BIA.Controllers
 
                                         content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                                        response = client.PostAsync(apiUrl, content).Result;
+                                        using (HttpClient client = new HttpClient())
+                                        {
+                                            HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
 
-                                        responseContent = response.Content.ReadAsStringAsync().Result;
+                                            responseContent = response.Content.ReadAsStringAsync().Result;
+                                        }
 
                                         apiResponse = JsonConvert.DeserializeObject<RechargeResponseModel>(responseContent);
 
@@ -207,9 +212,12 @@ namespace BIA.Controllers
 
                                                 content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                                                response = client.PostAsync(apiUrl, content).Result;
+                                                using (HttpClient client = new HttpClient())
+                                                {
+                                                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
 
-                                                responseContent = response.Content.ReadAsStringAsync().Result;
+                                                    responseContent = await response.Content.ReadAsStringAsync();
+                                                }
 
                                                 apiResponse = JsonConvert.DeserializeObject<RechargeResponseModel>(responseContent);
 
@@ -477,9 +485,12 @@ namespace BIA.Controllers
 
                     StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                    HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
+                    using (HttpClient client = new HttpClient())
+                    {
+                        HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
 
-                    responseContent = response.Content.ReadAsStringAsync().Result;
+                        responseContent = response.Content.ReadAsStringAsync().Result;
+                    }
 
                     apiResponse = JsonConvert.DeserializeObject<RechargeResponseModel>(responseContent);
 
@@ -491,9 +502,12 @@ namespace BIA.Controllers
 
                             content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                            response = client.PostAsync(apiUrl, content).Result;
+                            using (HttpClient client = new HttpClient())
+                            {
+                                HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
 
-                            responseContent = response.Content.ReadAsStringAsync().Result;
+                                responseContent = response.Content.ReadAsStringAsync().Result;
+                            }
 
                             apiResponse = JsonConvert.DeserializeObject<RechargeResponseModel>(responseContent);
 
@@ -505,9 +519,12 @@ namespace BIA.Controllers
 
                                     content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                                    response = client.PostAsync(apiUrl, content).Result;
+                                    using (HttpClient client = new HttpClient())
+                                    {
+                                        HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
 
-                                    responseContent = response.Content.ReadAsStringAsync().Result;
+                                        responseContent = response.Content.ReadAsStringAsync().Result;
+                                    }
 
                                     apiResponse = JsonConvert.DeserializeObject<RechargeResponseModel>(responseContent);
 

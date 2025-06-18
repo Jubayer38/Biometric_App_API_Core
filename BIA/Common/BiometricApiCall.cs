@@ -1190,7 +1190,6 @@ namespace BIA.Common
 
         public async Task<SingleSourceCheckResponseModelRevamp> SingleSourceCheckThroughAPI(string msisdn, string userName)
         {
-            HttpClient client = new HttpClient();
             LogModel log = new LogModel();
             string res = string.Empty;
             SingleSourceReqModel singleSourceReqModel = new SingleSourceReqModel();
@@ -1221,10 +1220,14 @@ namespace BIA.Common
                         reqModel = new SingleSourceReqModel { msisdn = msisdn };
                         string jsonData = JsonConvert.SerializeObject(reqModel);
                         log.req_blob = byteArrayConverter.GetGenericJsonData(jsonData);
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer "+singleSourceLoginSessionToken);
-                        content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                        HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
-                        responseContent = response.Content.ReadAsStringAsync().Result;
+
+                        using (HttpClient client = new HttpClient())
+                        {
+                            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + singleSourceLoginSessionToken);
+                            content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                            HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
+                            responseContent = response.Content.ReadAsStringAsync().Result;
+                        }
 
                         Inforesponse = JsonConvert.DeserializeObject<SingleSourceRes>(responseContent);
 
@@ -1240,11 +1243,14 @@ namespace BIA.Common
                             reqModel = new SingleSourceReqModel { msisdn = msisdn };
                             jsonData = JsonConvert.SerializeObject(reqModel);
                             log.req_blob = byteArrayConverter.GetGenericJsonData(jsonData);
-                            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + singleSourceLoginSessionToken);
-                            content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                            response = client.PostAsync(apiUrl, content).Result;
-                            
-                            responseContent = response.Content.ReadAsStringAsync().Result;
+
+                            using (HttpClient client = new HttpClient())
+                            {
+                                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + singleSourceLoginSessionToken);
+                                content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                                HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
+                                responseContent = response.Content.ReadAsStringAsync().Result;
+                            }
 
                             Inforesponse = JsonConvert.DeserializeObject<SingleSourceRes>(responseContent);
                             log.res_time = DateTime.Now;

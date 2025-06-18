@@ -11,7 +11,6 @@ namespace BIA.JWET
     {
         public string GenerateJWETToken(string itopUpNumber, string retailerCode, string deviceId, string loginProvider, string userId, int timeAddSubstract)
         {
-            HttpClient client = new HttpClient();
             string tokenSignK = "pKbotujPftemhsd7ummFE4iYg6VxIvEUKBn65qVB3DFMytF1tLo29sKZZvjfgegTu2dDuAJ3zK3KPdJuYDYEjzjtkpOxoM5kQYURRFDmDP0EqKObvFDmQuUwx4sjTT75";
             string tokenEncK = "OfOPD1UGH4mtisyv8I25QI4ZCIFPKsqJ";
             string issuer = "banglalink.net";

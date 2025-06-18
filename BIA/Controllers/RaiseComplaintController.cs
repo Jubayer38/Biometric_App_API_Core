@@ -31,7 +31,6 @@ namespace BIA.Controllers
         [Route("ComplaintSubmit")]
         public async Task<IActionResult> RaiseComplaintSubmit(ComplaintReqModel reqModel)
         {
-            HttpClient client = new HttpClient();
             ValidTokenResponse security = new ValidTokenResponse();
             BLLRAToDBSSParse dBSSParse = new BLLRAToDBSSParse();
             ComplaintResponseModel? apiResponse = new ComplaintResponseModel();
@@ -86,8 +85,11 @@ namespace BIA.Controllers
 
                 StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
-                responseContent = response.Content.ReadAsStringAsync().Result;
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = client.PostAsync(apiUrl, content).Result;
+                    responseContent = response.Content.ReadAsStringAsync().Result;
+                }
 
                 apiResponse = JsonConvert.DeserializeObject<ComplaintResponseModel>(responseContent);
                 
