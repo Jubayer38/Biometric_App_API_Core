@@ -1398,6 +1398,25 @@ namespace BIA.BLL.BLLServices
             }
             return amount;
         }
+
+        public async Task<string> GetCategoryMinAmountTesla(string category)
+        {
+            string amount = string.Empty;
+            try
+            {
+                var dataRow = await dataManager.GetCategoryMinAmount(category);
+
+                if (dataRow.Rows.Count > 0)
+                {
+                    amount = Convert.ToString(dataRow.Rows[0]["AMOUNT"] == DBNull.Value ? null : dataRow.Rows[0]["AMOUNT"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return amount;
+        }
         #endregion
     }
 }
