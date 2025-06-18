@@ -3613,8 +3613,28 @@ namespace BIA.BLL.BLLServices
             return Tuple.Create(channelId, inventoryId);
         }
 
-
         public async Task<string> GetCenterCodeByUserName(string userlName)
+        {
+            string centerCode = "";
+
+            try
+            {
+                //dataManager = new DALBiometricRepo();
+                var dataRow = await dataManager.GetCenterCodeByUserName(userlName);
+
+                if (dataRow.Rows.Count > 0)
+                {
+                    centerCode = Convert.ToString(dataRow.Rows[0]["CENTER_CODE"] == DBNull.Value ? null : dataRow.Rows[0]["CENTER_CODE"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return centerCode;
+        }
+
+        public async Task<string> GetCenterCodeByUserNameGan(string userlName)
         {
             string centerCode = "";
 
