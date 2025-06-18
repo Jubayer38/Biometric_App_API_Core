@@ -1127,6 +1127,7 @@ namespace BIA.Common
             SingleSourceRes Inforesponse = new SingleSourceRes();
             string token = string.Empty;
             string res = string.Empty;
+
             try
             {
                 StringContent content;
