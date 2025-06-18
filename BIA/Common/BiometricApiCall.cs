@@ -1136,6 +1136,7 @@ namespace BIA.Common
                     user_name = SettingsValues.GetSingleSourceUserName(),
                     password = SettingsValues.GetSingleSourcePassword()
                 };
+
                 messages = SettingsValues.GetSingleSourceMessage();
                 log.req_string = JsonConvert.SerializeObject(loginReqModel).ToString();
                 log.req_blob = byteArrayConverter.GetGenericJsonData(loginReqModel);
