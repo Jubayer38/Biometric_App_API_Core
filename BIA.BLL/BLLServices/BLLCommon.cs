@@ -1389,11 +1389,7 @@ namespace BIA.BLL.BLLServices
 
                 if (dataRow.Rows.Count > 0)
                 {
-                    for (int i = 0; i < dataRow.Rows.Count; i++)
-                    {
-                        amount = Convert.ToString(dataRow.Rows[0]["AMOUNT"] == DBNull.Value ? null : dataRow.Rows[0]["AMOUNT"]);
-                        break;
-                    }
+                    amount = Convert.ToString(dataRow.Rows[0]["AMOUNT"] == DBNull.Value ? null : dataRow.Rows[0]["AMOUNT"]);
                 }
             }
             catch (Exception ex)
